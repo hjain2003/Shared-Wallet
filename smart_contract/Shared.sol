@@ -21,6 +21,8 @@ contract Shared {
     event ParticipantAccepted(uint256 indexed walletId, address indexed participant);
     event ParticipantRejected(uint256 indexed walletId, address indexed participant);
     event ParticipantRemoved(uint256 indexed walletId, address indexed participant);
+    event FundsAddedToSharedWallet(uint256 indexed walletId, address indexed participant, uint256 amount);
+    event FundsWithdrawnFromSharedWallet(uint256 indexed walletId, address indexed participant, uint256 amount);
 
     function generateUniqueRandomId() internal view returns (uint256) {
         uint256 randomId = uint256(keccak256(abi.encodePacked(block.difficulty, block.timestamp, blockhash(block.number - 1))));
@@ -33,48 +35,47 @@ contract Shared {
         return randomId;
     }
 
-    function isRequestPending(uint256 _walletId, address _participant) internal view returns (bool) {
-        for (uint256 i = 0; i < sharedWallets[_walletId].participantRequests.length; i++) {
-            if (sharedWallets[_walletId].participantRequests[i] == _participant) {
-                return true;
+    function findWalletIndex(uint256 _walletId) internal view returns (uint256) {
+        for (uint256 i = 0; i < sharedWallets.length; i++) {
+            if (sharedWallets[i].walletId == _walletId) {
+                return i;
             }
         }
-        return false;
+        revert("Wallet not found");
     }
 
-    function removeFromRequests(uint256 _walletId, address _participant) internal  {
-        for (uint256 i = 0; i < sharedWallets[_walletId].participantRequests.length; i++) {
-            if (sharedWallets[_walletId].participantRequests[i] == _participant) {
-                for (uint256 j = i; j < sharedWallets[_walletId].participantRequests.length - 1; j++) {
-                    sharedWallets[_walletId].participantRequests[j] = sharedWallets[_walletId].participantRequests[j + 1];
+    function removeFromArray(address[] storage array, address element) internal {
+        for (uint256 i = 0; i < array.length; i++) {
+            if (array[i] == element) {
+                if (i < array.length - 1) {
+                    array[i] = array[array.length - 1];
                 }
-                sharedWallets[_walletId].participantRequests.pop();
-                break;
+                array.pop();
+                return;
             }
         }
+        revert("Element not found in array");
+    }
+
+    function isRequestPending(uint256 _walletId, address _participant) internal view returns (bool) {
+        uint walletIndex = findWalletIndex(_walletId);
+        for(uint256 i=0;i<sharedWallets[walletIndex].participantRequests.length;i++){
+            if(sharedWallets[walletIndex].participantRequests[i]==_participant){
+                return true;
+            }
+        } 
+        return false;
     }
 
     function isParticipant(uint256 _walletId, address _participant) internal view returns (bool) {
-        for (uint256 i = 0; i < sharedWallets[_walletId].participants.length; i++) {
-            if (sharedWallets[_walletId].participants[i] == _participant) {
+        uint walletIndex = findWalletIndex(_walletId);
+        for(uint256 i=0;i<sharedWallets[walletIndex].participants.length;i++){
+            if(sharedWallets[walletIndex].participants[i]==_participant){
                 return true;
             }
-        }
+        } 
         return false;
     }
-
-     function removeFromParticipants(uint256 _walletId, address _participant) internal {
-        for (uint256 i = 0; i < sharedWallets[_walletId].participants.length; i++) {
-            if (sharedWallets[_walletId].participants[i] == _participant) {
-                for (uint256 j = i; j < sharedWallets[_walletId].participants.length - 1; j++) {
-                    sharedWallets[_walletId].participants[j] = sharedWallets[_walletId].participants[j + 1];
-                }
-                sharedWallets[_walletId].participants.pop();
-                break;
-            }
-        }
-    }
-
 
     function createSharedWallet(uint256 _goalAmount, uint256 _borrowLimit) public {
         require(_goalAmount > 0, "Goal amount must be greater than 0");
@@ -87,8 +88,8 @@ contract Shared {
         SharedWallet memory newWallet = SharedWallet({
             walletId: walletId,
             admin: msg.sender,
-            goalAmount: _goalAmount,
-            borrowLimit: _borrowLimit,
+            goalAmount: _goalAmount * 1 ether,
+            borrowLimit: _borrowLimit * 1 ether,
             participants: initialParticipants,
             participantRequests: new address[](0)
         });
@@ -108,13 +109,7 @@ contract Shared {
         require(!isParticipant(_walletId, msg.sender), "Already a participant");
         require(!isRequestPending(_walletId, msg.sender), "Request already submitted");
 
-        uint256 walletIndex;
-        for (uint256 i = 0; i < sharedWallets.length; i++) {
-            if (sharedWallets[i].walletId == _walletId) {
-                walletIndex = i;
-                break;
-            }
-        }
+        uint256 walletIndex = findWalletIndex(_walletId);
         sharedWallets[walletIndex].participantRequests.push(msg.sender);
 
         emit ParticipantRequest(_walletId, msg.sender);
@@ -122,11 +117,12 @@ contract Shared {
 
 
     function acceptParticipant(uint256 _walletId, address _participant) public {
-        require(msg.sender == sharedWallets[_walletId].admin, "Only admin can accept participants");
+        uint256 walletIndex = findWalletIndex(_walletId);
+        require(msg.sender == sharedWallets[walletIndex].admin, "Only admin can accept participants");
         require(isRequestPending(_walletId, _participant), "Participant request not found");
 
-        sharedWallets[_walletId].participants.push(_participant);
-        removeFromRequests(_walletId, _participant);
+        sharedWallets[walletIndex].participants.push(_participant);
+        removeFromArray(sharedWallets[walletIndex].participantRequests, _participant);
 
         emit ParticipantAccepted(_walletId, _participant);
     }
@@ -135,7 +131,8 @@ contract Shared {
         require(msg.sender == sharedWallets[_walletId].admin, "Only admin can reject participants");
         require(isRequestPending(_walletId, _participant), "Participant request not found");
 
-        removeFromRequests(_walletId, _participant);
+        uint256 walletIndex = findWalletIndex(_walletId);
+        removeFromArray(sharedWallets[walletIndex].participantRequests, _participant);
 
         emit ParticipantRejected(_walletId, _participant);
     }
@@ -144,8 +141,51 @@ contract Shared {
         require(msg.sender == sharedWallets[_walletId].admin, "Only admin can remove participants");
         require(isParticipant(_walletId, _participant), "Participant not found");
 
-        removeFromParticipants(_walletId, _participant);
-
+        uint256 walletIndex = findWalletIndex(_walletId);
+        removeFromArray(sharedWallets[walletIndex].participants, _participant);
         emit ParticipantRemoved(_walletId, _participant);
     }
+
+    function addFundsToSharedWallet(uint256 _walletId) public payable {
+        uint256 walletIndex=findWalletIndex(_walletId);
+        require(walletIdExists[_walletId], "Wallet with given ID does not exist");
+        require(isParticipant(_walletId, msg.sender), "Only participants can add funds");
+        require(msg.value > 0 ether,"Insufficient funds");
+        // require(sharedWallets[walletIndex].goalAmount >= msg.value, "Insufficient goalAmount");
+
+        sharedWalletBalances[_walletId] += msg.value;
+        if(sharedWallets[walletIndex].goalAmount > msg.value){
+            sharedWallets[walletIndex].goalAmount -= msg.value;
+        }
+        else{
+            sharedWallets[walletIndex].goalAmount = 0 * 1 ether;
+        }
+
+        emit FundsAddedToSharedWallet(_walletId, msg.sender, msg.value);
+    }
+
+    function getBalance(uint256 _walletId) public view returns(uint256){
+        require(isParticipant(_walletId, msg.sender),"You are not a particpant of the specified wallet id");
+        
+        return sharedWalletBalances[_walletId] / 1 ether;
+        
+    }
+
+    function withdrawFundsFromSharedWallet(uint256 _walletId, uint256 _amount) public {
+        uint walletIndex=findWalletIndex(_walletId);
+        require(walletIdExists[_walletId], "Wallet with given ID does not exist");
+        require(isParticipant(_walletId, msg.sender), "Only participants can withdraw funds");
+        require(_amount <= sharedWalletBalances[_walletId], "Insufficient funds in the shared wallet");
+        require(_amount <= sharedWallets[walletIndex].borrowLimit, "Withdrawal amount exceeds the borrow limit");
+
+        uint amountInEther = _amount * 1 ether;
+        sharedWalletBalances[_walletId] -= amountInEther;
+        sharedWallets[walletIndex].goalAmount += amountInEther;
+        payable(msg.sender).transfer(amountInEther);
+
+        emit FundsWithdrawnFromSharedWallet(_walletId, msg.sender, amountInEther);
+    }
 }
+
+
+    
