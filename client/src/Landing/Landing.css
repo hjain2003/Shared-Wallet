@@ -1,0 +1,46 @@
+.landing-back{
+    background: rgba(10, 4, 15, 1);
+    color: rgba(255, 255, 255, 1);
+    height: 100vh;
+    text-align: center;
+}
+.es-logo{
+    height: 15vh;
+    padding-top: 8%;
+}
+.ES-name{
+    font-size: 124px;
+    font-weight: 700;
+    line-height: 186px;
+    letter-spacing: 0em;
+    text-align: center;
+}
+.desc-es{
+    margin-left: 30vh;
+    margin-right: 30vh;
+    font-size: 4vh;
+    letter-spacing: 0em;
+    text-align: center;
+    color: rgb(185, 185, 185);
+}
+
+.connect-wallet{
+    padding: 4vh;
+    margin-top: 2vh;
+}
+
+.land-button{
+    border: 1px solid rgba(153, 52, 231, 1);
+    box-shadow: 0px 4px 4px 0px rgba(92, 25, 145, 1);
+    width: fit-content;
+    text-align: center;
+    padding: 2vh;
+    border-radius: 2vh;
+    font-size: 4vh;
+}
+
+.land-button:hover{
+    cursor: pointer;
+    background: linear-gradient(272.88deg, #9934E7 4.95%, #5C1991 93.62%);
+    box-shadow: 0px 4px 20px 0px rgba(104, 109, 224, 0.5);
+}
