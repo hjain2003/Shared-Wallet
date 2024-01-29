@@ -20,7 +20,7 @@ const Dashboard = () => {
         <div className='search-notif'>
         <div className='search'>
         <div className='search-section'>
-            <img src={search}/>
+            <img src={search} alt='search logo'/>
             <input type='text' className='search-input' placeholder='Search'></input>
         </div>
         </div>

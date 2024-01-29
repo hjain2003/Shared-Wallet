@@ -12,14 +12,14 @@ const MainSection = () => {
 
         <div className="assets">
           <div className="ass1">
-            <img src={money1} />
+            <img src={money1} alt="logo"/>
             <div className="money-text">
               <div className="money-head">Total Assets</div>
               <div className="money-value">$50,000</div>
             </div>
           </div>
           <div className="ass2">
-            <img src={money2} />
+            <img src={money2} alt="logo"/>
             <div className="money-text">
               <div className="money-head">Total Deposits</div>
               <div className="money-value">$50,000</div>
