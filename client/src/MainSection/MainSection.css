@@ -1,0 +1,54 @@
+.main{
+    background-color: #1c1c1cda;
+    margin-right: 2vh;
+    width: 880px;
+    color: aliceblue;
+    border-radius: 20px;
+    margin-bottom: 2.5vh;
+}
+
+.assets{
+    display: flex;
+    margin-top: 2vh;
+    margin-left: 2vh ;
+}
+.ass1,.ass2{
+    display: flex;
+    align-items: center;
+    margin: 2vh;
+    padding: 1vh;
+}
+
+.ass1 img, .ass2 img{
+    background-color: #ffffff2b;
+    height: fit-content;
+    padding: 1vh;
+    border-radius: 16px;
+
+}
+.money-text{
+    padding: 1vh;
+}
+.money-head{
+    font-size: 15px;
+}
+.money-value{
+    font-size: 25px;
+}
+
+.shared-head{
+    padding-left: 5vh;
+    font-size: 25px;
+}
+
+.shared-wallets{
+    /* background-color: rgba(255, 255, 255, 0.256); */
+    margin-top: 5vh;
+    margin-left: 5vh;
+    margin-right: 1vh ;
+    height: 59vh;
+    margin-top: 2vh;
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+}
