@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.12;
+pragma solidity ^0.8.19;
 
 contract Shared {
 
@@ -25,15 +25,16 @@ contract Shared {
     event FundsWithdrawnFromSharedWallet(uint256 indexed walletId, address indexed participant, uint256 amount);
 
     function generateUniqueRandomId() internal view returns (uint256) {
-        uint256 randomId = uint256(keccak256(abi.encodePacked(block.difficulty, block.timestamp, blockhash(block.number - 1))));
-        randomId = randomId % 9000 + 1000;
+    uint256 randomId = uint256(keccak256(abi.encodePacked(block.prevrandao, block.timestamp, blockhash(block.number - 1))));
+    randomId = randomId % 9000 + 1000;
 
-        while (walletIdExists[randomId]) {
-            randomId = (randomId + 1) % 9000 + 1000;
-        }
-
-        return randomId;
+    while (walletIdExists[randomId]) {
+        randomId = (randomId + 1) % 9000 + 1000;
     }
+
+    return randomId;
+}
+
 
     function findWalletIndex(uint256 _walletId) internal view returns (uint256) {
         for (uint256 i = 0; i < sharedWallets.length; i++) {
@@ -138,10 +139,10 @@ contract Shared {
     }
 
     function removeParticipant(uint256 _walletId, address _participant) public {
-        require(msg.sender == sharedWallets[_walletId].admin, "Only admin can remove participants");
+        uint256 walletIndex=findWalletIndex(_walletId);
+        require(msg.sender == sharedWallets[walletIndex].admin, "Only admin can remove participants");
         require(isParticipant(_walletId, _participant), "Participant not found");
 
-        uint256 walletIndex = findWalletIndex(_walletId);
         removeFromArray(sharedWallets[walletIndex].participants, _participant);
         emit ParticipantRemoved(_walletId, _participant);
     }
