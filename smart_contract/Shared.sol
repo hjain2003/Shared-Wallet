@@ -15,6 +15,8 @@ contract Shared {
     SharedWallet[] public sharedWallets;
     mapping(uint256 => bool) public walletIdExists;
     mapping(uint256 => uint256) public sharedWalletBalances;
+    mapping(address => string) public username;
+    mapping(address => string) public name;
 
     event SharedWalletCreated(uint256 indexed walletId, address indexed admin, uint256 goalAmount, uint256 borrowLimit, address[] participants);
     event ParticipantRequest(uint256 indexed walletId, address indexed participant);
@@ -76,6 +78,22 @@ contract Shared {
             }
         } 
         return false;
+    }
+
+    function setName(string memory _name) public{
+        name[msg.sender] = _name;
+    }
+
+    function setUsername(string memory _username) public{
+        username[msg.sender]=_username;
+    }
+
+    function getName()  public view returns(string memory){
+        return name[msg.sender];
+    }
+
+    function getUsername()  public view returns(string memory){
+        return username[msg.sender];
     }
 
     function createSharedWallet(uint256 _goalAmount, uint256 _borrowLimit) public {
