@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import swexit from "./exit-icon.svg";
@@ -10,24 +10,37 @@ import vector4 from "./vector4.svg";
 import vector5 from "./vector5.svg";
 
 import "./SharedWallet.css";
+import SettingsSW from './SettingsSW/SettingsSW';
 
 const pro1 = {
   hidden: {
-    y: "100px",
+    y: '100px',
     opacity: 0,
   },
   visible: {
-    y: "200px",
+    y: '200px',
     opacity: 1,
-    transition: { delay: 0.5 },
+    transition: { delay: 0.0 },
   },
 };
 
 const SharedWallet = ({ open, onClose }) => {
+  const [openSCard, setOpenSCard] = useState(false);
+
+  const handleOpenSLogoClick = () => {
+    setOpenSCard(true);
+    
+  };
+
+  function CardSClose() {
+    setOpenSCard(false);
+  }
+
   var unit = "ETHEREUM";
   if (!open) return null;
   return (
     <AnimatePresence>
+    <div>
       <motion.div
         class="pro1"
         id="pro1"
@@ -37,13 +50,13 @@ const SharedWallet = ({ open, onClose }) => {
       >
         <div className="swmain">
           <div className="swheader">
-            <div className="swh1">Shared WalletID</div>
-            <div className="swh2">Shared Wallet Name</div>
+            <div className="swh1">Shared Wallet Name</div>
+            <div className="swh2">Shared WalletID</div>
             <div className="setting-exit-btns">
               <div className="logo1" onClick={onClose}>
                 <img src={swexit} alt="Exit shared wallet" />
               </div>
-              <div className="logo2">
+              <div className="logo2" onClick={handleOpenSLogoClick}>
                 <img src={swsettings} alt="Open shared wallet settings" />
               </div>
             </div>
@@ -99,7 +112,11 @@ const SharedWallet = ({ open, onClose }) => {
             <div className="leave-wallet">Leave Wallet</div>
           </div>
         </div>
+        <div >
+        {openSCard && <SettingsSW sopen={openSCard} onClose={CardSClose} />}
+        </div>
       </motion.div>
+      </div>
     </AnimatePresence>
   );
 };

@@ -1,5 +1,3 @@
-// WalletCard.js
-
 import React, { useState } from 'react';
 import './WalletCard.css';
 import SharedWallet from './SharedWallet/SharedWallet';
@@ -7,17 +5,21 @@ import openlogo from './fluent_open-20-regular.svg';
 
 const WalletCard = () => {
   const [openCard, setOpenCard] = useState(false);
+  const [overlayVisible, setOverlayVisible] = useState(false);
 
   function CardClose(){
     setOpenCard(false);
+    setOverlayVisible(false);
 }
 
   const handleOpenLogoClick = () => {
     setOpenCard(true);
+    setOverlayVisible(true);
   };
 
   return (
     <div>
+      {overlayVisible && <div className="overlay"></div>}
       <div className='wallet-card'>
       <div className='wallet-card-top'>
         <div className='wallet-id'>Shared Wallet ID</div>
