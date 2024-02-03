@@ -11,19 +11,21 @@ contract Shared {
         address[] participants;
         address[] participantRequests;
     }
-
     SharedWallet[] public sharedWallets;
 
     struct Charity{
-        uint walletId;
+        address walletId;
+        string charityName;
         string description;
-        uint totalMoneyRaised;
     }
-
+    Charity[] public charities;
+     
     mapping(uint256 => bool) public walletIdExists;
     mapping(uint256 => uint256) public sharedWalletBalances;
     mapping(address => string) public username;
     mapping(address => string) public name;
+    mapping(uint=>uint) public charityId;
+    mapping(address => bool) public hasCreatedCharity;
 
     string[] public existingUsernames;
 
@@ -35,6 +37,7 @@ contract Shared {
     event ParticipantRemoved(uint256 indexed walletId, address indexed participant);
     event FundsAddedToSharedWallet(uint256 indexed walletId, address indexed participant, uint256 amount);
     event FundsWithdrawnFromSharedWallet(uint256 indexed walletId, address indexed participant, uint256 amount);
+    event CharityCreated(address indexed walletId, string charityName, string description);
 
     function generateUniqueRandomId() internal view returns (uint256) {
     uint256 randomId = uint256(keccak256(abi.encodePacked(block.prevrandao, block.timestamp, blockhash(block.number - 1))));
@@ -227,6 +230,26 @@ contract Shared {
 
         emit FundsWithdrawnFromSharedWallet(_walletId, msg.sender, amountInEther);
     }
+    
+    function createOrgCharity(string memory _name, string memory _description) public{
+        require(!hasCreatedCharity[msg.sender], "charity already created");
+
+        Charity memory newCharity = Charity({
+            walletId : msg.sender,
+            charityName : _name,
+            description : _description
+        });
+
+        charities.push(newCharity);
+        hasCreatedCharity[msg.sender]=true;
+
+        emit CharityCreated(msg.sender, _name, _description);
+    }
+
+    function getAllCharities() public view returns(Charity[] memory){
+        return charities;
+    }
+
 }
 
 
