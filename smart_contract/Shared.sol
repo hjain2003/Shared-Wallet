@@ -10,8 +10,18 @@ contract Shared {
         uint256 borrowLimit;
         address[] participants;
         address[] participantRequests;
+        uint256[] transactionIndices;
     }
     SharedWallet[] public sharedWallets;
+
+    struct Transaction {
+        string sender;
+        string receiver;
+        uint256 amount;
+        string description;
+        uint256 timestamp;
+    }
+    Transaction[] public allTransactions;
 
     struct Charity{
         address walletId;
@@ -35,8 +45,8 @@ contract Shared {
     event ParticipantAccepted(uint256 indexed walletId, address indexed participant);
     event ParticipantRejected(uint256 indexed walletId, address indexed participant);
     event ParticipantRemoved(uint256 indexed walletId, address indexed participant);
-    event FundsAddedToSharedWallet(uint256 indexed walletId, address indexed participant, uint256 amount);
-    event FundsWithdrawnFromSharedWallet(uint256 indexed walletId, address indexed participant, uint256 amount);
+    // event FundsAddedToSharedWallet(uint256 indexed walletId, address indexed participant, uint256 amount);
+    // event FundsWithdrawnFromSharedWallet(uint256 indexed walletId, address indexed participant, uint256 amount);
     event CharityCreated(address indexed walletId, string charityName, string description);
 
     function generateUniqueRandomId() internal view returns (uint256) {
@@ -136,7 +146,8 @@ contract Shared {
             goalAmount: _goalAmount * 1 ether,
             borrowLimit: _borrowLimit * 1 ether,
             participants: initialParticipants,
-            participantRequests: new address[](0)
+            participantRequests: new address[](0),
+            transactionIndices: new uint256[](0)
         });
 
         sharedWallets.push(newWallet);
@@ -198,6 +209,7 @@ contract Shared {
         require(msg.value > 0 ether,"Insufficient funds");
         // require(sharedWallets[walletIndex].goalAmount >= msg.value, "Insufficient goalAmount");
 
+
         sharedWalletBalances[_walletId] += msg.value;
         if(sharedWallets[walletIndex].goalAmount > msg.value){
             sharedWallets[walletIndex].goalAmount -= msg.value;
@@ -206,7 +218,17 @@ contract Shared {
             sharedWallets[walletIndex].goalAmount = 0 * 1 ether;
         }
 
-        emit FundsAddedToSharedWallet(_walletId, msg.sender, msg.value);
+        uint256 transactionIndex = allTransactions.length;
+        allTransactions.push(Transaction({
+            sender: username[msg.sender],
+            receiver: "shared wallet",
+            amount: msg.value,
+            description: "Funds added to shared wallet",
+            timestamp: block.timestamp
+        }));
+
+        sharedWallets[walletIndex].transactionIndices.push(transactionIndex);
+
     }
 
     function getBalance(uint256 _walletId) public view returns(uint256){
@@ -216,7 +238,7 @@ contract Shared {
         
     }
 
-    function withdrawFundsFromSharedWallet(uint256 _walletId, uint256 _amount) public {
+    function withdrawFundsFromSharedWallet(uint256 _walletId, uint256 _amount, string memory _description) public {
         uint walletIndex=findWalletIndex(_walletId);
         require(walletIdExists[_walletId], "Wallet with given ID does not exist");
         require(isParticipant(_walletId, msg.sender), "Only participants can withdraw funds");
@@ -228,9 +250,36 @@ contract Shared {
         sharedWallets[walletIndex].goalAmount += amountInEther;
         payable(msg.sender).transfer(amountInEther);
 
-        emit FundsWithdrawnFromSharedWallet(_walletId, msg.sender, amountInEther);
+        uint256 transactionIndex = allTransactions.length;
+        allTransactions.push(Transaction({
+            sender: "shared wallet",
+            receiver: username[msg.sender],
+            amount: amountInEther,
+            description: _description,
+            timestamp: block.timestamp
+        }));
+
+        sharedWallets[walletIndex].transactionIndices.push(transactionIndex);
+
+        // emit FundsWithdrawnFromSharedWallet(_walletId, msg.sender, amountInEther);
     }
     
+    function getWalletTransactions(uint256 _walletId) public view returns (Transaction[] memory) {
+        require(walletIdExists[_walletId], "Wallet with given ID does not exist");
+
+        uint256 walletIndex = findWalletIndex(_walletId);
+        uint256[] memory transactionIndices = sharedWallets[walletIndex].transactionIndices;
+        uint256 transactionsCount = transactionIndices.length;
+
+        Transaction[] memory walletTransactions = new Transaction[](transactionsCount);
+
+        for (uint256 i = 0; i < transactionsCount; i++) {
+            walletTransactions[i] = allTransactions[transactionIndices[i]];
+        }
+
+        return walletTransactions;
+}
+
     function createOrgCharity(string memory _name, string memory _description) public{
         require(!hasCreatedCharity[msg.sender], "charity already created");
 
