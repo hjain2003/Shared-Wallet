@@ -13,10 +13,20 @@ contract Shared {
     }
 
     SharedWallet[] public sharedWallets;
+
+    struct Charity{
+        uint walletId;
+        string description;
+        uint totalMoneyRaised;
+    }
+
     mapping(uint256 => bool) public walletIdExists;
     mapping(uint256 => uint256) public sharedWalletBalances;
     mapping(address => string) public username;
     mapping(address => string) public name;
+
+    string[] public existingUsernames;
+
 
     event SharedWalletCreated(uint256 indexed walletId, address indexed admin, uint256 goalAmount, uint256 borrowLimit, address[] participants);
     event ParticipantRequest(uint256 indexed walletId, address indexed participant);
@@ -84,9 +94,22 @@ contract Shared {
         name[msg.sender] = _name;
     }
 
-    function setUsername(string memory _username) public{
-        username[msg.sender]=_username;
+    function checkUsernameExists(string memory _username) internal view returns (bool) {
+    for (uint i = 0; i < existingUsernames.length; i++) {
+        if (keccak256(bytes(existingUsernames[i])) == keccak256(bytes(_username))) {
+            return true; 
+        }
     }
+    return false; 
+}
+
+    function setUsername(string memory _username) public {
+    require(bytes(username[msg.sender]).length == 0, "Username already exists!!");
+    require(!checkUsernameExists(_username), "Username is already taken by another user!");
+
+    existingUsernames.push(_username);
+    username[msg.sender] = _username;
+}
 
     function getName()  public view returns(string memory){
         return name[msg.sender];
