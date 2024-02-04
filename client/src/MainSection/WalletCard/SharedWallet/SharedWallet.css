@@ -1,11 +1,12 @@
-.pro1{
-    transform: translate(-50%, -50%);
+ 
+.pro1 {
+    transform: none;
     position: fixed;
-	z-index: 500;
+    z-index: 500;
     top: -14.5vh;
     left: 31vh;
     width: 100%;
-}
+  }  
 
 .swmain{
     background: rgba(10, 4, 15, 1);
