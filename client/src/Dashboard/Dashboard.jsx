@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import background from './BG.png';
 import notif from './notification.svg';
@@ -8,7 +8,11 @@ import './Dashboard.css';
 import Navbar from '../Navbar/Navbar';
 import RightNav from '../RightNav/RightNav';
 import MainSection from '../MainSection/MainSection';
+import { SharedContext } from '../context/SharedContext';
 const Dashboard = () => {
+    const {connectWallet} = useContext(SharedContext);
+
+
   return (      
     <div className='full-page' style={{ backgroundImage: `url(${background})` }}>
     <div className='grid'>
@@ -29,8 +33,8 @@ const Dashboard = () => {
         </div>
         </div>
         <div className='userinfo'>
-            Shreeya
-            <img src={notif} className="notif-logo" alt="Profile" />
+            <button className='reconfigure' onClick={connectWallet}>Reconfigure</button>
+            {/* <img src={notif} className="notif-logo" alt="Profile" /> */}
         </div>
         </div>
     </div>
