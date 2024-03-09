@@ -8,23 +8,23 @@ const RightNav = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const getArticles = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get(
-          "https://newsapi.org/v2/everything?q=crypto&bitcoin&blockchain&financefrom=2024-02-09&sortBy=publishedAt&apiKey=b8f21b7a03c24f928daf52140b6e1233"
-        );
-        setArticles(response.data.articles);
-      } catch (error) {
-        console.error("Error fetching news articles:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const getArticles = async () => {
+  //     try {
+  //       setLoading(true);
+  //       const response = await axios.get(
+  //         "https://newsapi.org/v2/everything?q=crypto&bitcoin&blockchain&financefrom=2024-02-09&sortBy=publishedAt&apiKey=b8f21b7a03c24f928daf52140b6e1233"
+  //       );
+  //       setArticles(response.data.articles);
+  //     } catch (error) {
+  //       console.error("Error fetching news articles:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    getArticles();
-  }, []);
+  //   getArticles();
+  // }, []);
 
   return (
     <div className="rightnav">

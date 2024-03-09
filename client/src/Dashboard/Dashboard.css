@@ -10,6 +10,15 @@
     display: flex;
 }
 
+.reconfigure{
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 17px;
+    border: none;
+    color: white;
+    background-color: green;
+    cursor: pointer;
+}
 .welcome-section{
     height: 35px;
     width: 100%;

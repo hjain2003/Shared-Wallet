@@ -7,6 +7,13 @@
     margin-bottom: 2.5vh;
 }
 
+.grey{
+    background-color: rgb(133, 132, 132);
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
 .assets{
     display: flex;
     margin-top: 2vh;
@@ -24,8 +31,50 @@
     height: fit-content;
     padding: 1vh;
     border-radius: 16px;
-
 }
+.shared_wallet_create{
+    position: absolute;
+    transform: translate(-50%,-50%);
+    padding-top: 40px;
+    padding-bottom: 40px;
+    padding-left: 80px;
+    padding-right: 80px;
+    top:50%;
+    left:50%;
+    /* height: 500px; */
+    /* width: 500px; */
+    background-color: black;
+    border-radius: 30px;
+    color: white;
+    z-index:10000;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    /* justify-content: center; */
+    border: 2px solid white;
+}
+
+.shared_wallet_create input{
+    border: none;
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 20px;
+}
+
+.shared_wallet_create button{
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    color: white;
+    font-size: 20px;
+}
+#create{
+    background-color: green;
+}
+#cancel{
+    background-color: red;
+}
+
 .money-text{
     padding: 1vh;
 }
