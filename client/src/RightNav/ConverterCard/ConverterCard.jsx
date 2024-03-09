@@ -46,6 +46,8 @@ const ConverterCard = () => {
   const [isDropdownOpen2, setIsDropdownOpen2] = useState(false);
   const [selectedOption1, setSelectedOption1] = useState(null);
   const [selectedOption2, setSelectedOption2] = useState(null);
+  const [inputValue1, setInputValue1] = useState('');
+  const [inputValue2, setInputValue2] = useState('');
 
   const toggleDropdown1 = () => {
     setIsDropdownOpen1(!isDropdownOpen1);
@@ -63,6 +65,22 @@ const ConverterCard = () => {
     setSelectedOption2(option2);
     setIsDropdownOpen2(false);
   };
+
+  const convertAmount = () => {
+    // Assuming the exchange rate is hardcoded
+    const exchangeRate = 0.0000032;
+    const convertedAmount = parseFloat(inputValue1) * (1/exchangeRate);
+    setInputValue2(convertedAmount.toFixed(2)); // Limiting to 2 decimal places
+  };
+
+  const handleInputChange1 = (event) => {
+    setInputValue1(event.target.value);
+  };
+
+  const handleInputChange2 = (event) => {
+    setInputValue2(event.target.value);
+  };
+
 
   return (
     <div className="cc-main">
@@ -96,10 +114,10 @@ const ConverterCard = () => {
               ))}
             </ul>
           </div>
-          <input type="number" className="number-input"></input>
+          <input type="number" className="number-input" value={inputValue1} onChange={handleInputChange1}></input>
         </div>
       </div>
-      <img className="divider" src={divider} />
+      <img className="divider" src={divider} onClick={convertAmount} />
 
       <div className="first">
         <div className="tag">Converted Amount</div>
@@ -131,13 +149,13 @@ const ConverterCard = () => {
               ))}
             </ul>
           </div>
-          <input type="number" className="number-input"></input>
+          <input type="number" className="number-input" value={inputValue2} onChange={handleInputChange2}></input>
         </div>
       </div>
 
       <div className="converter">
                 <div className="head-er">Indicative Exchange Rate</div>
-                <div className="conv-rate">1 ETH= 0.332  USD</div>
+                <div className="conv-rate">1INR = 0.0000032ETH</div>
       </div>
 
     </div>

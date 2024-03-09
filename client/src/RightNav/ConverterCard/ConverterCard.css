@@ -90,7 +90,7 @@
   }
 
   .dropdown-menu li:hover {
-    background-color: #f8f8f8;
+    background-color: #686868;
   }
 
   .dropdown-menu li .dropdown-option-image {
@@ -127,6 +127,9 @@
     margin-left: auto;
   }
 
+  .number-input:focus{
+    outline: none;
+  }
   .divider{
     margin-left: 2vh;
     margin-top: 1vh;
