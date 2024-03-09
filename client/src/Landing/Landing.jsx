@@ -1,13 +1,20 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useNavigate } from 'react-router';
 import Typewriter from "typewriter-effect";
 
 import './Landing.css';
 import EthLogo from './EthLogo.svg';
+import { SharedContext } from '../context/SharedContext';
 
 const Landing = () => {
     
     const navigate= useNavigate();
+    const {connectWallet} = useContext(SharedContext);
+
+    const handleConnect = async ()=>{
+      await connectWallet();
+      navigate('/dashboard');
+    }
 
   return (
     <div className='landing-back'>
@@ -25,7 +32,7 @@ const Landing = () => {
             />
           
           </div>
-        <div className='connect-wallet' onClick={() => navigate('/dashboard')}>
+        <div className='connect-wallet' onClick={handleConnect}>
         <span className='land-button'>Connect with MetaMask</span>
         </div>
     </div>
