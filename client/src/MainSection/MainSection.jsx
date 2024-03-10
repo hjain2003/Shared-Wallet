@@ -1,10 +1,23 @@
-import React, { useContext, useEffect, useState } from "react";
+import React,{useContext, useEffect, useState} from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import "./MainSection.css";
 
 import money1 from "./money1.svg";
 import money2 from "./money2.svg";
 import WalletCard from "./WalletCard/WalletCard";
 import { SharedContext } from "../context/SharedContext";
+
+const pro1 = {
+  hidden: {
+    y: '100px',
+    opacity: 0,
+  },
+  visible: {
+    y: '200px',
+    opacity: 1,
+    transition: { delay: 0.0 },
+  },
+};
 
 const MainSection = () => {
   const { connectWallet, accountBalance, currentAccount, createSharedWallet, getAllSharedWallets } = useContext(SharedContext);
@@ -60,8 +73,17 @@ const MainSection = () => {
   return (
     <>
       {isSharedWalletOpen && (
+        <AnimatePresence>
+    <div>
+      <motion.div
+        class="pro1"
+        id="pro1"
+        variants={pro1}
+        initial="hidden"
+        animate="visible"
+      >
         <div className="shared_wallet_create">
-          <h2 align="center">Create Shared Wallet</h2>
+          <div align="center" className="csw-head">Create Shared Wallet</div>
           <br />
           <label htmlFor="">Wallet Name</label>
           <input type="text" value={walletName} onChange={(e) => setWalletName(e.target.value)} />
@@ -78,6 +100,9 @@ const MainSection = () => {
             <button id="cancel" onClick={closeSharedWalletCreateBox}>Cancel</button>
           </div>
         </div>
+        </motion.div>
+      </div>
+    </AnimatePresence>
       )
       }
       <div className="main">
@@ -98,7 +123,10 @@ const MainSection = () => {
                 <div className="money-value"><span className="grey">{shortenAddress(currentAccount)}</span></div>
               </div>
             </div>
-            <button id="create_wallet" onClick={openSharedWalletPopUp}>Create Shared Wallet</button>
+            <div div className="add-SW">
+              <button id="create_wallet" onClick={openSharedWalletPopUp}>+</button>
+              <div className="cc-create-sw">Create Your Shared Wallet</div>
+            </div>
           </div>
 
           <div className="shared-wallets-section">

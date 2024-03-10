@@ -91,60 +91,37 @@ linear-gradient(0deg, #9934E7, #9934E7);
     z-index: 1000000;
 }
 
-.deposit_box,.withdraw_box{
-    position: absolute;
-    transform: translate(-50%,-50%);
-    top:50%;
-    left:50%;
-    height: 200px;
-    width: 250px;
-    padding: 40px;
-    /* height: 500px; */
-    /* width: 500px; */
-    background-color: rgb(88, 0, 84);
-    border-radius: 30px;
-    color: white;
-    z-index:10000;
-    display: flex;
-    flex-direction: column;
-    /* align-items: center; */
-    /* justify-content: center; */
+.borrow_info, .lend_info{
+    top: 20vh;
+    height:max-content;
+    
 }
-.withdraw_box{
-    height: 400px;
-    width: 250px;
-}
-.deposit_box input{
-    padding: 10px;
+
+.lend-confirm{
+    background-color: green;
     border: none;
-    font-size: 20px;
-    border-radius: 10px;
+    width: 20vw;
+    margin-right: 2vh;
 }
-.withdraw_box input{
-    padding: 10px;
-    border: none;
-    font-size: 20px;
-    border-radius: 10px;
-}
-.deposit_box button{
-    cursor: pointer;
-    padding:10px;
-    border: none;
-    border-radius: 10px;
-    color: white;
-    font-size: 18px;
-}
-.withdraw_box button{
-    cursor: pointer;
-    padding:10px;
-    border: none;
-    border-radius: 10px;
-    color: white;
-    font-size: 18px;
-}
-#deposit,#withdraw{
-    background-color: black;
-}
-#cancel_wal{
+#cancel-box{
     background-color: red;
+    border: none;
+    width: 20vw;
+}
+#cancel-box:hover{
+    background-color: rgb(160, 1, 1);
+}
+
+.lend-confirm:hover{
+    background-color: rgb(0, 164, 0);
+    border: none;
+}
+
+.row-btns-br-len{
+    align-self: center;
+    padding: 2vh;
+}
+
+.shared_wallet_create input{
+    margin-top: 2vh;
 }
