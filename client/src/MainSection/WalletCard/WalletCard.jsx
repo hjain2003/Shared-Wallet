@@ -61,12 +61,12 @@ const WalletCard = ({ wallet }) => {
       {overlayVisible && <div className="overlay"></div>}
       <div className='wallet-card'>
         <div className='wallet-card-top'>
-          <div className='wallet-id'>{decimalWalletId}</div>
+          <div className='wallet-id'>{wallet.walletName}</div>
           <div className='open-logo' onClick={handleOpenLogoClick}>
             <img src={openlogo} className='o-logo' alt='Open Logo' />
           </div>
         </div>
-        <div className='sw-info'><b>{wallet.walletName}</b></div>
+        <div className='sw-info'><b>{decimalWalletId}</b></div>
         <div className='sw-info'></div>
         <div className='card-bottom'>
           <div className='borrow-btn' onClick={handleBorrowClick}>Borrow</div>
