@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./MainSection.css";
 
 import money1 from "./money1.svg";
@@ -7,7 +7,7 @@ import WalletCard from "./WalletCard/WalletCard";
 import { SharedContext } from "../context/SharedContext";
 
 const MainSection = () => {
-  const { connectWallet, accountBalance, currentAccount, createSharedWallet } = useContext(SharedContext);
+  const { connectWallet, accountBalance, currentAccount, createSharedWallet, getAllSharedWallets } = useContext(SharedContext);
 
   const shortenAddress = (address) => {
     if (address) {
@@ -22,6 +22,7 @@ const MainSection = () => {
   const [walletName, setWalletName] = useState('');
   const [goalAmount, setGoalAmount] = useState('');
   const [borrowLimit, setBorrowLimit] = useState('');
+  const [sharedWallets, setSharedWallets] = useState([]);
 
 
   const openSharedWalletPopUp = () => {
@@ -44,8 +45,18 @@ const MainSection = () => {
       console.log(error);
     }
 
-
   }
+
+  const fetchSharedWallets = async () => {
+    const wallets = await getAllSharedWallets();
+    setSharedWallets(wallets);
+  }
+
+  useEffect(() => {
+    fetchSharedWallets();
+
+  }, [currentAccount]);
+
   return (
     <>
       {isSharedWalletOpen && (
@@ -93,18 +104,10 @@ const MainSection = () => {
           <div className="shared-wallets-section">
             <div className="shared-head"> Your Shared Wallets</div>
             <div className="shared-wallets">
-              <WalletCard />
-              <WalletCard />
-              <WalletCard />
-              <WalletCard />
-              <WalletCard />
-              <WalletCard />
-              <WalletCard />
-              <WalletCard />
-              <WalletCard />
-              <WalletCard />
-              <WalletCard />
-              <WalletCard />
+              {sharedWallets.map(wallet => (
+                console.log(wallet.walletId),
+                <WalletCard key={wallet.walletId} walid={wallet.walletId} wallet={wallet} />
+              ))}
             </div>
           </div>
         </div>
