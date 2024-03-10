@@ -23,6 +23,7 @@ export const SharedProvider = ({ children }) => {
 
     const [currentAccount, setCurrentAccount] = useState('');
     const [accountBalance, setAccountBalance] = useState(0);
+    const [sharedWalletBalance, setSharedWalletBalance] = useState({});
 
     const checkIfWalletIsConnected = async () => {
         if (!ethereum)
@@ -68,17 +69,17 @@ export const SharedProvider = ({ children }) => {
     const createSharedWallet = async (goalAmount, borrowLimit, walletName) => {
         try {
             const SharedContract = createEthereumContract();
-    
+
             const goalAmountWei = ethers.utils.parseEther(goalAmount.toString());
             const borrowLimitWei = ethers.utils.parseEther(borrowLimit.toString());
-    
+
             const transaction = await SharedContract.createSharedWallet(goalAmountWei, borrowLimitWei, `${walletName}`);
             const receipt = await transaction.wait();
 
             const walletId = receipt.events[0].args.walletId.toNumber();
-    
+
             console.log(`Shared wallet "${walletName}" created successfully!`);
-    
+
             getAccountBalance();
             return walletId;
 
@@ -86,7 +87,36 @@ export const SharedProvider = ({ children }) => {
             console.error('Error creating shared wallet:', error);
         }
     };
-    
+
+    const getSharedWalletBalance = async (walletId) => {
+        try {
+            if (currentAccount && walletId) {
+                const SharedContract = createEthereumContract();
+                const balance = await SharedContract.getBalance(walletId);
+
+                const formattedBalance = parseFloat(
+                    ethers.utils.formatEther(balance)
+                ).toFixed(4);
+
+                setSharedWalletBalance(formattedBalance);
+            }
+        } catch (error) {
+            console.error('Error fetching shared wallet balance:', error);
+        }
+    };
+
+
+    const getAllSharedWallets = async () => {
+        try {
+            const SharedContract = createEthereumContract();
+            const wallets = await SharedContract.getAllSharedWallets();
+
+            return wallets;
+        } catch (error) {
+            console.error('Error fetching shared wallets:', error);
+        }
+    };
+
 
     useEffect(() => {
         checkIfWalletIsConnected();
@@ -94,7 +124,7 @@ export const SharedProvider = ({ children }) => {
     }, [currentAccount])
 
     return (
-        <SharedContext.Provider value={{ connectWallet, accountBalance, currentAccount, createSharedWallet }}>
+        <SharedContext.Provider value={{connectWallet, accountBalance, currentAccount, createSharedWallet, getAllSharedWallets, sharedWalletBalance, getSharedWalletBalance}}>
             {children}
         </SharedContext.Provider>
     )

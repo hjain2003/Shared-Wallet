@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useContext, useEffect, useState} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import swexit from "./exit-icon.svg";
@@ -11,6 +11,7 @@ import vector5 from "./vector5.svg";
 
 import "./SharedWallet.css";
 import SettingsSW from './SettingsSW/SettingsSW';
+import { SharedContext } from "../../../context/SharedContext";
 
 const pro1 = {
   hidden: {
@@ -24,8 +25,25 @@ const pro1 = {
   },
 };
 
-const SharedWallet = ({ open, onClose }) => {
+const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowLimit}) => {
+
+  const { sharedWalletBalance, getSharedWalletBalance } = useContext(SharedContext);
+
   const [openSCard, setOpenSCard] = useState(false);
+
+  const convertWeiToEther = (weiValue) => {
+    const etherValue = weiValue / 1e18;
+    return etherValue.toFixed(2);
+  };
+
+  const decimalGoal = convertWeiToEther(goalAmount)/1e18;
+  const decimalbl = convertWeiToEther(borrowLimit)/1e18;
+
+  useEffect(() => {
+    // Fetch shared wallet balance when the component mounts
+    getSharedWalletBalance(walletId);
+  }, [walletId, getSharedWalletBalance]);
+
 
   const handleOpenSLogoClick = () => {
     setOpenSCard(true);
@@ -38,6 +56,8 @@ const SharedWallet = ({ open, onClose }) => {
 
   var unit = "ETHEREUM";
   if (!open) return null;
+
+  const formattedBalance = typeof sharedWalletBalance === 'number' ? sharedWalletBalance.toFixed(2) : 'N/A';
   return (
     <AnimatePresence>
     <div>
@@ -50,8 +70,8 @@ const SharedWallet = ({ open, onClose }) => {
       >
         <div className="swmain">
           <div className="swheader">
-            <div className="swh1">Shared Wallet Name</div>
-            <div className="swh2">Shared WalletID</div>
+            <div className="swh1">{walletName}</div>
+            <div className="swh2">{walletId}</div>
             <div className="setting-exit-btns">
               <div className="logo1" onClick={onClose}>
                 <img src={swexit} alt="Exit shared wallet" />
@@ -69,7 +89,7 @@ const SharedWallet = ({ open, onClose }) => {
               <div className="swlogo-back">
                 <img src={vector1} />
               </div>
-              <div className="swvalue">8 {unit}</div>
+              <div className="swvalue">{formattedBalance} {unit}</div>
               <div className="swlogo">Balance</div>
             </div>
             {/* card2 */}
@@ -77,7 +97,7 @@ const SharedWallet = ({ open, onClose }) => {
               <div className="swlogo-back">
                 <img src={vector2} />
               </div>
-              <div className="swvalue">8 {unit}</div>
+              <div className="swvalue">{decimalGoal} {unit}</div>
               <div className="swlogo">Goal</div>
             </div>
             {/* card3 */}
@@ -85,7 +105,7 @@ const SharedWallet = ({ open, onClose }) => {
               <div className="swlogo-back">
                 <img src={vector3} />
               </div>
-              <div className="swvalue">8 {unit}</div>
+              <div className="swvalue">{decimalbl} {unit}</div>
               <div className="swlogo">Borrow Limit</div>
             </div>
             <div className="swibottom">
