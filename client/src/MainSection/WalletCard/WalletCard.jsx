@@ -26,11 +26,10 @@ const WalletCard = ({ wallet }) => {
   const [lendPopupVisible, setLendPopupVisible] = useState(false);
   const [borrowPopupVisible, setBorrowPopupVisible] = useState(false);
 
-  const [isDepositOpen, setisDepositOpen] = useState(false);
+
   const [depositAmount, setDepositAmount] = useState('');
   const [deptxt, setdeptxt] = useState('Deposit');
 
-  const [iswithdrawOpen, setisWithdrawOpen] = useState(false);
   const [withdrawAmt, setwithdrawAmt] = useState('');
   const [withdrawReason, setwithdrawReason] = useState('');
   const [withtxt, setwithtxt] = useState('Withdraw');
@@ -67,30 +66,15 @@ const WalletCard = ({ wallet }) => {
   }
 
   const handleDeposit = async () => {
+    console.log("clickedddd");
     if (depositAmount) {
       setdeptxt('Loading ...');
       // Trigger the add funds functionality from SharedContext
       await addFundsToSharedWallet(decimalWalletId, depositAmount);
       setDepositAmount(''); // Clear the input field
       setdeptxt('Deposit');
-      setisDepositOpen(false);
     }
   };
-
-  const openDepositBox = () => {
-    setisDepositOpen(true);
-  }
-
-  const closedeposit = () => {
-    setisDepositOpen(false);
-  }
-
-  const openWithdrawBox = () => {
-    setisWithdrawOpen(true);
-  }
-  const closewithdrawBox = () => {
-    setisWithdrawOpen(false);
-  }
 
   
   const handleWithdraw = async () => {
@@ -102,7 +86,6 @@ const WalletCard = ({ wallet }) => {
       setwithdrawAmt(''); // Clear the input field
       setwithdrawReason(''); // Clear the input field
       setwithtxt('Withdraw');
-      setisWithdrawOpen(false);
     }
   };
 
@@ -111,38 +94,6 @@ const WalletCard = ({ wallet }) => {
 
   return (
     <div>
-
-      {isDepositOpen && (
-        <div className="deposit_box">
-          <h3 align="center">Deposit to {wallet.walletName}</h3>
-          <label htmlFor="">Deposit Amount</label>
-          <input type="text" placeholder='Amount to shared wallet' value={depositAmount}
-            onChange={(e) => setDepositAmount(e.target.value)} />
-          <br />
-          <div className="row_deposit">
-            <button id="deposit" onClick={handleDeposit}>{deptxt}</button>
-            &nbsp;&nbsp;&nbsp;
-            <button id="cancel_wal" onClick={closedeposit}>Cancel</button>
-          </div>
-        </div>
-      )}
-
-      {iswithdrawOpen && (
-        <div className="withdraw_box">
-          <h3 align="center">Withdraw from {wallet.walletName}</h3>
-          <label htmlFor="">Withdraw Amount</label>
-          <input type="text" placeholder='Amount to be withdrawn' value={withdrawAmt} onChange={(e) => setwithdrawAmt(e.target.value)} />
-          <br />
-          <label htmlFor="">Withdrawl Reason</label>
-          <textarea name="" id="" cols="30" rows="10" value={withdrawReason} onChange={(e) => setwithdrawReason(e.target.value)}></textarea>
-          <br />
-          <div className="row_deposit">
-            <button id="withdraw" onClick={handleWithdraw}>{withtxt}</button>
-            &nbsp;&nbsp;&nbsp;
-            <button id="cancel_wal" onClick={closewithdrawBox}>Cancel</button>
-          </div>
-        </div>
-      )}
 
       {overlayVisible && <div className="overlay"></div>}
       <div className='wallet-card'>
@@ -173,9 +124,9 @@ const WalletCard = ({ wallet }) => {
               >
                 <div className="shared_wallet_create lend_info">
                   Enter the amount you want to deposit:
-                  <input type="number"></input>
+                  <input type="number" value= {depositAmount} onChange={(e) => setDepositAmount(e.target.value)} ></input>
                   <div className="row-btns-br-len">
-                  <button className="lend-confirm">Deposit</button>
+                  <button className="lend-confirm" onClick={handleDeposit}>Deposit</button>
                   <button id="cancel-box" onClick={closeLendBox}>Cancel</button>
                    </div>
                 </div>
