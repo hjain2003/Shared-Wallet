@@ -14,6 +14,7 @@ const Navbar = () => {
   const [openCCard, setOpenCCard] = useState(false);
 
   const handleOpenCLogoClick = () => {
+    
     setOpenCCard(true);
     
   };
@@ -42,17 +43,19 @@ const Navbar = () => {
         </div>
       </Link>
 
+      <Link to="/dashboard" className="linkremove">
       <div to="/" className="linkremove" onClick={handleOpenCLogoClick}>
         <div className="nav-element">
           <img src={depositsLogo} className="nav-logo" alt="Deposits" />
           <div className="nav-topic">Charity</div>
         </div>
       </div>
+      </Link>
 
-      <Link to="/" className="linkremove">
+      <Link to="/split" className="linkremove">
         <div className="nav-element">
           <img src={profileLogo} className="nav-logo" alt="Profile" />
-          <div className="nav-topic">Profile</div>
+          <div className="nav-topic">Split</div>
         </div>
       </Link>
 
