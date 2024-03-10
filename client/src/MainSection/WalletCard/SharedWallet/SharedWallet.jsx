@@ -25,9 +25,7 @@ const pro1 = {
   },
 };
 
-const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowLimit}) => {
-
-  const { sharedWalletBalance, getSharedWalletBalance } = useContext(SharedContext);
+const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowLimit, walletBalance}) => {
 
   const [openSCard, setOpenSCard] = useState(false);
 
@@ -38,11 +36,6 @@ const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowL
 
   const decimalGoal = convertWeiToEther(goalAmount)/1e18;
   const decimalbl = convertWeiToEther(borrowLimit)/1e18;
-
-  useEffect(() => {
-    // Fetch shared wallet balance when the component mounts
-    getSharedWalletBalance(walletId);
-  }, [walletId, getSharedWalletBalance]);
 
 
   const handleOpenSLogoClick = () => {
@@ -56,8 +49,7 @@ const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowL
 
   var unit = "ETHEREUM";
   if (!open) return null;
-
-  const formattedBalance = typeof sharedWalletBalance === 'number' ? sharedWalletBalance.toFixed(2) : 'N/A';
+  
   return (
     <AnimatePresence>
     <div>
@@ -89,7 +81,7 @@ const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowL
               <div className="swlogo-back">
                 <img src={vector1} />
               </div>
-              <div className="swvalue">{formattedBalance} {unit}</div>
+              <div className="swvalue">{walletBalance} {unit}</div>
               <div className="swlogo">Balance</div>
             </div>
             {/* card2 */}

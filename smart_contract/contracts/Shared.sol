@@ -6,6 +6,7 @@ contract Shared {
     struct SharedWallet {
         uint256 walletId;
         string walletName;
+        uint256 walletBalance;
         address admin;
         uint256 goalAmount;
         uint256 borrowLimit;
@@ -32,7 +33,6 @@ contract Shared {
     Charity[] public charities;
      
     mapping(uint256 => bool) public walletIdExists;
-    mapping(uint256 => uint256) public sharedWalletBalances;
     mapping(address => string) public username;
     mapping(address => string) public name;
     mapping(uint=>uint) public charityId;
@@ -144,6 +144,7 @@ contract Shared {
         SharedWallet memory newWallet = SharedWallet({
             walletId: walletId,
             walletName : _walname,
+            walletBalance: 0,
             admin: msg.sender,
             goalAmount: _goalAmount * 1 ether,
             borrowLimit: _borrowLimit * 1 ether,
@@ -214,10 +215,11 @@ contract Shared {
         require(walletIdExists[_walletId], "Wallet with given ID does not exist");
         require(isParticipant(_walletId, msg.sender), "Only participants can add funds");
         require(msg.value > 0 ether,"Insufficient funds");
+        
         // require(sharedWallets[walletIndex].goalAmount >= msg.value, "Insufficient goalAmount");
 
 
-        sharedWalletBalances[_walletId] += msg.value;
+        sharedWallets[walletIndex].walletBalance += msg.value;
         if(sharedWallets[walletIndex].goalAmount > msg.value){
             sharedWallets[walletIndex].goalAmount -= msg.value;
         }
@@ -241,9 +243,10 @@ contract Shared {
     }
 
     function getBalance(uint256 _walletId) public view returns(uint256){
+        uint walletIndex=findWalletIndex(_walletId);
         require(isParticipant(_walletId, msg.sender),"You are not a particpant of the specified wallet id");
         
-        return sharedWalletBalances[_walletId] / 1 ether;
+        return sharedWallets[walletIndex].walletBalance/1 ether;
         
     }
 
@@ -252,11 +255,11 @@ contract Shared {
         require(walletIdExists[_walletId], "Wallet with given ID does not exist");
         require(isParticipant(_walletId, msg.sender), "Only participants can withdraw funds");
         require(_amount * 1 ether <= sharedWallets[walletIndex].borrowLimit, "Withdrawal amount exceeds the borrow limit");
-        require(_amount * 1 ether<= sharedWalletBalances[_walletId], "Insufficient funds in the shared wallet");
+        require(_amount * 1 ether<= sharedWallets[walletIndex].walletBalance, "Insufficient funds in the shared wallet");
         
 
         uint amountInEther = _amount * 1 ether;
-        sharedWalletBalances[_walletId] -= amountInEther;
+        sharedWallets[walletIndex].walletBalance -= amountInEther;
         sharedWallets[walletIndex].goalAmount += amountInEther;
         payable(msg.sender).transfer(amountInEther);
 

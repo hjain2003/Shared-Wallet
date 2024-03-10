@@ -41,6 +41,7 @@
     justify-content: space-around;
     margin: 1vh;
     margin-top: 1vh;
+    font-size: 20px;
 }
 
 .borrow-btn{
@@ -70,10 +71,10 @@ linear-gradient(0deg, #9934E7, #9934E7);
 
 .borrow-btn,.lend-btn{
     padding: 0.9vh;
-    padding-left: 3vh;
-    padding-right: 3vh;
+    padding-left: 2vh;
+    padding-right: 2vh;
     margin: 1vh;
-    border-radius: 20px;
+    border-radius: 10px;
 }
 
 .o-logo{
@@ -88,4 +89,62 @@ linear-gradient(0deg, #9934E7, #9934E7);
 
 .pop-up{
     z-index: 1000000;
+}
+
+.deposit_box,.withdraw_box{
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top:50%;
+    left:50%;
+    height: 200px;
+    width: 250px;
+    padding: 40px;
+    /* height: 500px; */
+    /* width: 500px; */
+    background-color: rgb(88, 0, 84);
+    border-radius: 30px;
+    color: white;
+    z-index:10000;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    /* justify-content: center; */
+}
+.withdraw_box{
+    height: 400px;
+    width: 250px;
+}
+.deposit_box input{
+    padding: 10px;
+    border: none;
+    font-size: 20px;
+    border-radius: 10px;
+}
+.withdraw_box input{
+    padding: 10px;
+    border: none;
+    font-size: 20px;
+    border-radius: 10px;
+}
+.deposit_box button{
+    cursor: pointer;
+    padding:10px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 18px;
+}
+.withdraw_box button{
+    cursor: pointer;
+    padding:10px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 18px;
+}
+#deposit,#withdraw{
+    background-color: black;
+}
+#cancel_wal{
+    background-color: red;
 }

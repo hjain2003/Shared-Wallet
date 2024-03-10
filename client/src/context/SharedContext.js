@@ -88,23 +88,6 @@ export const SharedProvider = ({ children }) => {
         }
     };
 
-    const getSharedWalletBalance = async (walletId) => {
-        try {
-            if (currentAccount && walletId) {
-                const SharedContract = createEthereumContract();
-                const balance = await SharedContract.getBalance(walletId);
-
-                const formattedBalance = parseFloat(
-                    ethers.utils.formatEther(balance)
-                ).toFixed(4);
-
-                setSharedWalletBalance(formattedBalance);
-            }
-        } catch (error) {
-            console.error('Error fetching shared wallet balance:', error);
-        }
-    };
-
 
     const getAllSharedWallets = async () => {
         try {
@@ -117,6 +100,35 @@ export const SharedProvider = ({ children }) => {
         }
     };
 
+    const addFundsToSharedWallet = async (walletId, amount) => {
+        try {
+          const SharedContract = createEthereumContract();
+          await SharedContract.addFundsToSharedWallet(walletId, { value: ethers.utils.parseEther(amount.toString()) });
+          getAccountBalance(); // Refresh the account balance
+          console.log(`Funds added to Shared Wallet ${walletId}: ${amount} ETH`);
+        } catch (error) {
+          console.error('Error adding funds to Shared Wallet:', error);
+        }
+      };
+      
+      const withdrawFromSharedWallet = async (walletId, amount, reason) => {
+        try {
+            const SharedContract = createEthereumContract();
+
+            const amountWei = ethers.utils.parseEther(amount.toString());
+
+            await SharedContract.withdrawFundsFromSharedWallet(walletId, amountWei, reason);
+
+            getAccountBalance();
+
+            console.log(`Funds withdrawn from Shared Wallet ${walletId}: ${amount} ETH`);
+
+        } catch (error) {
+            console.error('Error withdrawing funds from Shared Wallet:', error);
+        }
+    };
+
+      
 
     useEffect(() => {
         checkIfWalletIsConnected();
@@ -124,7 +136,7 @@ export const SharedProvider = ({ children }) => {
     }, [currentAccount])
 
     return (
-        <SharedContext.Provider value={{connectWallet, accountBalance, currentAccount, createSharedWallet, getAllSharedWallets, sharedWalletBalance, getSharedWalletBalance}}>
+        <SharedContext.Provider value={{connectWallet, accountBalance, currentAccount, createSharedWallet, getAllSharedWallets, addFundsToSharedWallet, withdrawFromSharedWallet}}>
             {children}
         </SharedContext.Provider>
     )
