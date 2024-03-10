@@ -24,7 +24,7 @@ const Dashboard = () => {
         <Navbar />
         <div className='welcome-section'>
           <div className='welcome'>
-            Welcome Back, WalletID
+            Welcome Back,
           </div>
           <div className='search-notif'>
             <div className='search'>

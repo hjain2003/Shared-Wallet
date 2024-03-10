@@ -155,8 +155,8 @@ const WalletCard = ({ wallet }) => {
         <div className='sw-info'><b>{decimalWalletId}</b></div>
         <div className='sw-info'></div>
         <div className='card-bottom'>
-          <div className='borrow-btn' onClick={handleBorrowClick}>Borrow</div>
-          <div className='lend-btn' onClick={handleLendClick}>Lend</div>
+          <div className='borrow-btn' onClick={handleBorrowClick}>Withdraw</div>
+          <div className='lend-btn' onClick={handleLendClick}>Deposit</div>
         </div>
       </div>
       <div>
@@ -172,10 +172,10 @@ const WalletCard = ({ wallet }) => {
                 animate="visible"
               >
                 <div className="shared_wallet_create lend_info">
-                  Enter the amount you want to lend:
+                  Enter the amount you want to deposit:
                   <input type="number"></input>
                   <div className="row-btns-br-len">
-                  <button className="lend-confirm">Lend</button>
+                  <button className="lend-confirm">Deposit</button>
                   <button id="cancel-box" onClick={closeLendBox}>Cancel</button>
                    </div>
                 </div>
@@ -194,10 +194,10 @@ const WalletCard = ({ wallet }) => {
                     animate="visible"
                   >
                     <div className="shared_wallet_create borrow_info">
-                    Enter the amount you want to borrow:
+                    Enter the amount you want to withdraw:
                     <input type="number"></input>
                     <div className="row-btns-br-len">
-                    <button className="lend-confirm">Borrow</button>
+                    <button className="lend-confirm">Withdraw</button>
                     <button id="cancel-box" onClick={closeBorrowBox}>Cancel</button>
 
                     </div>
