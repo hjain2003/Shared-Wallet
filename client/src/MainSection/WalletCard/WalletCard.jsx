@@ -19,11 +19,22 @@ const pro1 = {
 };
 
 const WalletCard = ({ wallet }) => {
+  const {addFundsToSharedWallet, withdrawFromSharedWallet } = useContext(SharedContext);
   const [openCard, setOpenCard] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(false);
   const [walletInfo, setWalletInfo] = useState(null);
   const [lendPopupVisible, setLendPopupVisible] = useState(false);
   const [borrowPopupVisible, setBorrowPopupVisible] = useState(false);
+
+  const [isDepositOpen, setisDepositOpen] = useState(false);
+  const [depositAmount, setDepositAmount] = useState('');
+  const [deptxt, setdeptxt] = useState('Deposit');
+
+  const [iswithdrawOpen, setisWithdrawOpen] = useState(false);
+  const [withdrawAmt, setwithdrawAmt] = useState('');
+  const [withdrawReason, setwithdrawReason] = useState('');
+  const [withtxt, setwithtxt] = useState('Withdraw');
+
 
   const CardClose = () => {
     setOpenCard(false);
@@ -54,6 +65,46 @@ const WalletCard = ({ wallet }) => {
     setLendPopupVisible(false);
     setOverlayVisible(false);
   }
+
+  const handleDeposit = async () => {
+    if (depositAmount) {
+      setdeptxt('Loading ...');
+      // Trigger the add funds functionality from SharedContext
+      await addFundsToSharedWallet(decimalWalletId, depositAmount);
+      setDepositAmount(''); // Clear the input field
+      setdeptxt('Deposit');
+      setisDepositOpen(false);
+    }
+  };
+
+  const openDepositBox = () => {
+    setisDepositOpen(true);
+  }
+
+  const closedeposit = () => {
+    setisDepositOpen(false);
+  }
+
+  const openWithdrawBox = () => {
+    setisWithdrawOpen(true);
+  }
+  const closewithdrawBox = () => {
+    setisWithdrawOpen(false);
+  }
+
+  
+  const handleWithdraw = async () => {
+    if (withdrawAmt && withdrawReason) {
+      setwithtxt('Loading');
+      console.log(withdrawAmt);
+      // Trigger the withdraw funds functionality from SharedContext
+      await withdrawFromSharedWallet(decimalWalletId, withdrawAmt * 1e18, withdrawReason);
+      setwithdrawAmt(''); // Clear the input field
+      setwithdrawReason(''); // Clear the input field
+      setwithtxt('Withdraw');
+      setisWithdrawOpen(false);
+    }
+  };
 
   const hexWalletId = wallet.walletId.toHexString();
   const decimalWalletId = parseInt(hexWalletId, 16).toString();
@@ -158,7 +209,7 @@ const WalletCard = ({ wallet }) => {
         </div>
       </div>
       <div>
-        <SharedWallet open={openCard} onClose={CardClose} walletId={decimalWalletId} walletName={wallet.walletName} goalAmount={wallet.goalAmount} borrowLimit={wallet.borrowLimit} />
+        <SharedWallet open={openCard} onClose={CardClose} walletId={decimalWalletId} walletName={wallet.walletName} goalAmount={wallet.goalAmount} walletBalance ={wallet.walletBalance/1e18} borrowLimit={wallet.borrowLimit} />
       </div>
     </div>
   );
