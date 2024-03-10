@@ -18,6 +18,7 @@
     display: flex;
     margin-top: 2vh;
     margin-left: 2vh ;
+    align-items: center;
 }
 .ass1,.ass2{
     display: flex;
@@ -34,24 +35,18 @@
 }
 .shared_wallet_create{
     position: absolute;
-    transform: translate(-50%,-50%);
     padding-top: 40px;
     padding-bottom: 40px;
     padding-left: 80px;
     padding-right: 80px;
-    top:50%;
-    left:50%;
-    /* height: 500px; */
-    /* width: 500px; */
-    background-color: black;
-    border-radius: 30px;
+    width: 47vw;
+    background: rgb(18, 18, 18);
+    border-radius: 2vh;
     color: white;
     z-index:10000;
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
-    /* justify-content: center; */
-    border: 2px solid white;
+    height:75vh;
 }
 
 .shared_wallet_create input{
@@ -59,6 +54,10 @@
     padding: 10px;
     font-size: 20px;
     border-radius: 20px;
+}
+
+.shared_wallet_create input:focus{
+    outline: none;
 }
 
 .shared_wallet_create button{
@@ -69,9 +68,17 @@
     font-size: 20px;
 }
 #create{
-    background-color: green;
+    background-color: rgba(0, 128, 0, 0.769);
+    border: none;
+}
+#create:hover{
+    background-color: rgb(40, 150, 40);
 }
 #cancel{
+    background-color: rgb(145, 40, 40);
+    border :none;
+}
+#cancel:hover{
     background-color: red;
 }
 
@@ -100,4 +107,42 @@
     display: flex;
     flex-wrap: wrap;
     overflow-y: scroll;
+}
+
+.add-SW{
+    margin-left: auto;
+    margin-right: 3vh;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+#create_wallet{
+    height: 6vh;
+    padding: 1.5vh;
+    width: 6vh;
+    border-radius: 3vh;
+    border: none;
+    background-color: rgb(0, 218, 65);
+    font-weight: 100;
+    color: rgb(0, 0, 0);
+    font-size: 3vh;
+}
+#create_wallet:hover{
+    cursor: pointer;
+    background-color: rgb(14, 123, 47);
+}
+
+.cc-create-sw{
+    font-size: 1.5vh;
+    color: grey;
+}
+
+.csw-head{
+    font-size: 4vh;
+    font-weight: 500;
+    margin-top: 12vh;
+}
+
+.row_wallet{
+    align-self: center;
 }

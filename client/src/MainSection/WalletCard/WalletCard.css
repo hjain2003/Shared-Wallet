@@ -89,3 +89,38 @@ linear-gradient(0deg, #9934E7, #9934E7);
 .pop-up{
     z-index: 1000000;
 }
+
+.borrow_info, .lend_info{
+    top: 20vh;
+    height:max-content;
+    
+}
+
+.lend-confirm{
+    background-color: green;
+    border: none;
+    width: 20vw;
+    margin-right: 2vh;
+}
+#cancel-box{
+    background-color: red;
+    border: none;
+    width: 20vw;
+}
+#cancel-box:hover{
+    background-color: rgb(160, 1, 1);
+}
+
+.lend-confirm:hover{
+    background-color: rgb(0, 164, 0);
+    border: none;
+}
+
+.row-btns-br-len{
+    align-self: center;
+    padding: 2vh;
+}
+
+.shared_wallet_create input{
+    margin-top: 2vh;
+}
