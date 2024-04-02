@@ -11,7 +11,7 @@
 .wallet-card{
     background: rgba(0, 0, 0, 1);
     width: 220px;
-    height: 140px;
+    height: 125px;
     padding: 2vh;
     padding-top: 1.5vh;
     border-radius: 20px;
@@ -37,11 +37,10 @@
 }
 .card-bottom{
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    margin: 1vh;
+    justify-content: space-between;
     margin-top: 1vh;
     font-size: 20px;
+
 }
 
 .borrow-btn{
@@ -73,7 +72,6 @@ linear-gradient(0deg, #9934E7, #9934E7);
     padding: 0.9vh;
     padding-left: 2vh;
     padding-right: 2vh;
-    margin: 1vh;
     border-radius: 10px;
 }
 
