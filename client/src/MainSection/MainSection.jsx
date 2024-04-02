@@ -1,7 +1,7 @@
 import React,{useContext, useEffect, useState} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "./MainSection.css";
-
+import { FaPlus } from 'react-icons/fa';
 import money1 from "./money1.svg";
 import money2 from "./money2.svg";
 import WalletCard from "./WalletCard/WalletCard";
@@ -124,8 +124,8 @@ const MainSection = () => {
               </div>
             </div>
             <div div className="add-SW">
-              <button id="create_wallet" onClick={openSharedWalletPopUp}>+</button>
-              <div className="cc-create-sw">Create Your Shared Wallet</div>
+              <button id="create_wallet" onClick={openSharedWalletPopUp}>Create Shared Wallet &nbsp;<span className="plus-icon"><FaPlus /></span> </button>
+              {/* <div className="cc-create-sw">Create Your Shared Wallet</div> */}
             </div>
           </div>
 
