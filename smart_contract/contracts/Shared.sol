@@ -210,6 +210,13 @@ contract Shared {
         emit ParticipantRemoved(_walletId, _participant);
     }
 
+    function getNumberOfParticipants(uint256 _walletId) public view returns (uint256) {
+        require(walletIdExists[_walletId], "Wallet with given ID does not exist");
+        uint256 walletIndex = findWalletIndex(_walletId);
+        return sharedWallets[walletIndex].participants.length;
+    }
+
+
     function addFundsToSharedWallet(uint256 _walletId) public payable {
         uint256 walletIndex=findWalletIndex(_walletId);
         require(walletIdExists[_walletId], "Wallet with given ID does not exist");

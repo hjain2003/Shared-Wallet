@@ -28,6 +28,26 @@ const pro1 = {
 const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowLimit, walletBalance}) => {
 
   const [openSCard, setOpenSCard] = useState(false);
+  const { getNumberOfParticipants } = useContext(SharedContext);
+  const [numberOfParticipants, setNumberOfParticipants] = useState(0);
+
+  useEffect(() => {
+    const fetchNumberOfParticipants = async () => {
+      try {
+        const participantsBigNumber = await getNumberOfParticipants(walletId);
+        const participants = participantsBigNumber.toNumber(); // Convert BigNumber to number
+        console.log("Number of participants:", participants); // Log the value
+        setNumberOfParticipants(participants);
+      } catch (error) {
+        console.error("Error fetching number of participants:", error);
+      }
+    };
+
+    if (open) {
+      fetchNumberOfParticipants();
+    }
+  }, [open, getNumberOfParticipants, walletId]);
+
 
   const convertWeiToEther = (weiValue) => {
     const etherValue = weiValue / 1e18;
@@ -106,7 +126,7 @@ const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowL
               <div className="swlogo-back">
                 <img src={vector4} />
               </div>
-              <div className="swvalue">8 Members</div>
+              <div className="swvalue">{numberOfParticipants}</div>
               <div className="swlogo">Participants</div>
             </div>
             {/* card5 */}
