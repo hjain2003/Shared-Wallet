@@ -18,8 +18,9 @@ const Landing = () => {
 
   return (
     <div className='landing-back'>
-        <img src={EthLogo} alt="ethershare logo" className='es-logo'/>
-        <div className='ES-name'>SharedVault</div>
+        <img src={EthLogo} alt="ethershare logo" className='es-logo'/><br />
+        <h1 className="animate-charcter">ETHERMATE</h1>
+       
         <div className='desc-es'>
         <Typewriter
               onInit={(typewriter) => {

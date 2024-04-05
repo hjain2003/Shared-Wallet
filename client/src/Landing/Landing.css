@@ -1,4 +1,4 @@
-.landing-back{
+.landing-back {
     background: rgba(10, 4, 15, 1);
     color: rgba(255, 255, 255, 1);
     height: 100vh;
@@ -6,11 +6,40 @@
     overflow-x: hidden;
     overflow-y: hidden;
 }
-.es-logo{
+
+.animate-charcter {
+    background-image: linear-gradient(-225deg,
+            #231557 0%,
+            #44107a 29%,
+            #ff1361 67%,
+            #fff800 100%);
+    background-size: auto auto;
+    background-clip: border-box;
+    /* background-size: 200% auto; */
+    color: #fff;
+    background-clip: text;
+    /* text-fill-color: transparent; */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textclip 3.5s linear infinite;
+    display: inline-block;
+    font-size: 120px;
+    font-weight: bold;
+    margin-top: -50px;
+}
+
+@keyframes textclip {
+    to {
+        background-position: 200% center;
+    }
+}
+
+.es-logo {
     height: 8vw;
     padding-top: 8%;
 }
-.ES-name{
+
+.ES-name {
     font-size: 5vw;
     font-weight: 700;
     padding-top: 2vw;
@@ -18,21 +47,23 @@
     letter-spacing: 0em;
     text-align: center;
 }
-.desc-es{
+
+.desc-es {
     margin-left: 30vw;
     margin-right: 30vw;
-    font-size: 1.5vw;
+    font-size: 1.8vw;
+    margin-top: -45px;
     letter-spacing: 0em;
     text-align: center;
     color: rgb(185, 185, 185);
 }
 
-.connect-wallet{
+.connect-wallet {
     padding: 4vh;
     margin-top: 2vh;
 }
 
-.land-button{
+.land-button {
     border: 1px solid rgba(153, 52, 231, 1);
     box-shadow: 0px 4px 4px 0px rgba(92, 25, 145, 1);
     width: fit-content;
@@ -42,26 +73,29 @@
     font-size: 2.5vw;
 }
 
-.land-button:hover{
+.land-button:hover {
     cursor: pointer;
     background: linear-gradient(272.88deg, #9934E7 4.95%, #5C1991 93.62%);
     box-shadow: 0px 4px 20px 0px rgba(104, 109, 224, 0.5);
 }
 
 @media (max-width: 556px) {
-    .es-logo{
+    .es-logo {
         height: 15vw;
         padding-top: 35%;
     }
-    .ES-name{
+
+    .ES-name {
         font-size: 10vw;
     }
-    .desc-es{
+
+    .desc-es {
         font-size: 3vw;
         margin-left: 20vw;
         margin-right: 20vw;
-    } 
-    .land-button{
+    }
+
+    .land-button {
         font-size: 3.5vw;
-    }   
+    }
 }
