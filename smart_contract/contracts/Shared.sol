@@ -104,10 +104,6 @@ contract Shared {
         return false;
     }
 
-    function setName(string memory _name) public{
-        name[msg.sender] = _name;
-    }
-
     function checkUsernameExists(string memory _username) internal view returns (bool) {
     for (uint i = 0; i < existingUsernames.length; i++) {
         if (keccak256(bytes(existingUsernames[i])) == keccak256(bytes(_username))) {
@@ -117,13 +113,16 @@ contract Shared {
     return false; 
 }
 
-    function setUsername(string memory _username) public {
+    function mapNameAndUsernameToWalletId(string memory _name, string memory _username) public {
     require(bytes(username[msg.sender]).length == 0, "Username already exists!!");
     require(!checkUsernameExists(_username), "Username is already taken by another user!");
-
-    existingUsernames.push(_username);
+    
+    name[msg.sender] = _name;
     username[msg.sender] = _username;
+    existingUsernames.push(_username);
+
 }
+
 
     function getName()  public view returns(string memory){
         return name[msg.sender];
