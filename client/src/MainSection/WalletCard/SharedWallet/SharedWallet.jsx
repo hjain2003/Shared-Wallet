@@ -30,6 +30,28 @@ const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowL
   const [openSCard, setOpenSCard] = useState(false);
   const { getNumberOfParticipants } = useContext(SharedContext);
   const [numberOfParticipants, setNumberOfParticipants] = useState(0);
+  const [isopenparticipants, setopenparticipants] = useState(false);
+
+  const participantsData = [
+    { username: "User1", address: "0x1234...5678" },
+    { username: "User2", address: "0xABCD...EFGH" },
+    { username: "User1", address: "0x1234...5678" },
+    { username: "User2", address: "0xABCD...EFGH" },
+    { username: "User1", address: "0x1234...5678" },
+    { username: "User2", address: "0xABCD...EFGH" },
+    { username: "User1", address: "0x1234...5678" },
+    { username: "User2", address: "0xABCD...EFGH" },
+    { username: "User1", address: "0x1234...5678" },
+    { username: "User2", address: "0xABCD...EFGH" },
+    { username: "User1", address: "0x1234...5678" },
+    { username: "User2", address: "0xABCD...EFGH" },
+    { username: "User1", address: "0x1234...5678" },
+    { username: "User2", address: "0xABCD...EFGH" },
+    { username: "User1", address: "0x1234...5678" },
+    { username: "User2", address: "0xABCD...EFGH" },
+    // Add more participant objects as needed
+  ];
+
 
   useEffect(() => {
     const fetchNumberOfParticipants = async () => {
@@ -67,10 +89,34 @@ const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowL
     setOpenSCard(false);
   }
 
+  const openParticipants = ()=>{
+    setopenparticipants(true);
+    console.log("participant clicked");
+  }
+
+  const closeParticipants = ()=>{
+    setopenparticipants(false);
+    console.log("closed");
+  }
+
   var unit = "ETHEREUM";
   if (!open) return null;
   
   return (
+    <>
+   {isopenparticipants &&  (<div className="participant_list">
+    <button id="close_participants" onClick={closeParticipants}>Close</button>
+    <h3>Participants of {walletName}</h3>
+    <input type="text" placeholder="Search Participants" />
+    <br />
+    {participantsData.map((participant, index) => (
+            <div key={index} className="participant-row">
+              <span className="username">{participant.username}</span>
+              <span className="address">{participant.address}</span>
+            </div>
+          ))}
+    </div>
+   )}
     <AnimatePresence>
     <div>
       <motion.div
@@ -122,7 +168,7 @@ const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowL
             </div>
             <div className="swibottom">
             {/* card4 */}
-            <div className="swinfo info1 b1 members-card">
+            <div className="swinfo info1 b1 members-card" onClick={openParticipants}>
               <div className="swlogo-back">
                 <img src={vector4} />
               </div>
@@ -150,6 +196,7 @@ const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowL
       </motion.div>
       </div>
     </AnimatePresence>
+    </>
   );
 };
 

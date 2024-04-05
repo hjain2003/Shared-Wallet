@@ -1,0 +1,54 @@
+.full_page_name {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('BG.png');
+    background-color: black;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.full_page_name h1 {
+    font-size: 60px;
+}
+
+.full_page_name span {
+    font-size: 40px;
+}
+
+.setnameuser {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background-color: black;
+    width: 350px;
+    margin-right: 10px;
+    color: white;
+    border: 2px solid rgb(81, 81, 81);
+    font-size: 22px;
+}
+
+.full_page_name button {
+    background-color: purple;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    width: 200px;
+    border-bottom: 4px solid;
+    border-image-source: linear-gradient(0deg, rgba(170, 156, 255, 0.86), rgba(170, 156, 255, 0.86));
+    background: linear-gradient(0deg, rgba(153, 52, 231, 0.84), rgba(153, 52, 231, 0.84));
+    font-size: 20px;
+}
+
+.full_page_name button:hover{
+    transform: scale(1.2);
+}
+
+.unlock {
+    margin-top: -10px;
+}
