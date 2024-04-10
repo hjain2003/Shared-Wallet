@@ -149,6 +149,37 @@ export const SharedProvider = ({ children }) => {
     }
 };
 
+const getName = async () => {
+  try {
+    const SharedContract = createEthereumContract();
+    const name = await SharedContract.getName();
+    return name;
+  } catch (error) {
+    console.error("Error fetching name:", error);
+  }
+};
+
+const getUsername = async () => {
+  try {
+    const SharedContract = createEthereumContract();
+    const username = await SharedContract.getUsername();
+    return username;
+  } catch (error) {
+    console.error("Error fetching username:", error);
+  }
+};
+
+const mapNameAndUsernameToWalletId = async (name, username) => {
+  try {
+    const SharedContract = createEthereumContract();
+    await SharedContract.mapNameAndUsernameToWalletId(name, username);
+    console.log("Name and username mapped successfully!");
+  } catch (error) {
+    console.error("Error mapping name and username:", error);
+  }
+};
+
+
   useEffect(() => {
     checkIfWalletIsConnected();
     getAccountBalance();
@@ -164,7 +195,10 @@ export const SharedProvider = ({ children }) => {
         getAllSharedWallets,
         addFundsToSharedWallet,
         withdrawFromSharedWallet,
-        getNumberOfParticipants
+        getNumberOfParticipants,
+        getName,
+        getUsername,
+        mapNameAndUsernameToWalletId,
       }}
     >
       {children}

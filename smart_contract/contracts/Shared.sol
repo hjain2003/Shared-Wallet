@@ -116,7 +116,6 @@ contract Shared {
     function mapNameAndUsernameToWalletId(string memory _name, string memory _username) public {
     require(bytes(username[msg.sender]).length == 0, "Username already exists!!");
     require(!checkUsernameExists(_username), "Username is already taken by another user!");
-    
     name[msg.sender] = _name;
     username[msg.sender] = _username;
     existingUsernames.push(_username);
