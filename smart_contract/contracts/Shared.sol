@@ -46,7 +46,7 @@ contract Shared {
     event ParticipantAccepted(uint256 indexed walletId, address indexed participant);
     event ParticipantRejected(uint256 indexed walletId, address indexed participant);
     event ParticipantRemoved(uint256 indexed walletId, address indexed participant);
-    event FundsWithdrawnFromSharedWallet(uint256 indexed walletId, string indexed participant, uint256 amount);
+    event FundsWithdrawnFromSharedWallet(uint256 indexed walletId, string indexed participant, uint256 amount, string description);
     event FundsAddedToSharedWallet(uint256 indexed walletId, string indexed participant, uint256 amount);
     event CharityCreated(address indexed walletId, string charityName, string description);
 
@@ -279,7 +279,7 @@ contract Shared {
 
         sharedWallets[walletIndex].transactionIndices.push(transactionIndex);
 
-        emit FundsWithdrawnFromSharedWallet(_walletId, username[msg.sender], amountInEther);
+       emit FundsWithdrawnFromSharedWallet(_walletId, username[msg.sender], _amount, _description);
     }
     
     function getWalletTransactions(uint256 _walletId) public view returns (Transaction[] memory) {

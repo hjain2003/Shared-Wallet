@@ -26,10 +26,11 @@ const WalletCard = ({ wallet }) => {
   const [lendPopupVisible, setLendPopupVisible] = useState(false);
   const [borrowPopupVisible, setBorrowPopupVisible] = useState(false);
 
-
+  //deposit
   const [depositAmount, setDepositAmount] = useState('');
   const [deptxt, setdeptxt] = useState('Deposit');
 
+  //withdraw
   const [withdrawAmt, setwithdrawAmt] = useState('');
   const [withdrawReason, setwithdrawReason] = useState('');
   const [withtxt, setwithtxt] = useState('Withdraw');
@@ -68,9 +69,10 @@ const WalletCard = ({ wallet }) => {
   const handleDeposit = async () => {
     console.log("clickedddd");
     if (depositAmount) {
-      setdeptxt('Loading ...');
+      setdeptxt('Depositing ...');
       // Trigger the add funds functionality from SharedContext
       await addFundsToSharedWallet(decimalWalletId, depositAmount);
+      console.log(depositAmount);
       setDepositAmount(''); // Clear the input field
       setdeptxt('Deposit');
     }
@@ -79,12 +81,11 @@ const WalletCard = ({ wallet }) => {
   
   const handleWithdraw = async () => {
     if (withdrawAmt && withdrawReason) {
-      setwithtxt('Loading');
+      setwithtxt('Withdrawing ...');
+      await withdrawFromSharedWallet(decimalWalletId, withdrawAmt, withdrawReason);
       console.log(withdrawAmt);
-      // Trigger the withdraw funds functionality from SharedContext
-      await withdrawFromSharedWallet(decimalWalletId, withdrawAmt * 1e18, withdrawReason);
-      setwithdrawAmt(''); // Clear the input field
-      setwithdrawReason(''); // Clear the input field
+      setwithdrawAmt('');
+      setwithdrawReason('');
       setwithtxt('Withdraw');
     }
   };
@@ -146,9 +147,12 @@ const WalletCard = ({ wallet }) => {
                   >
                     <div className="shared_wallet_create borrow_info">
                     Enter the amount you want to withdraw:
-                    <input type="number"></input>
+                    <input type="number" value={withdrawAmt} onChange={(e) => setwithdrawAmt(e.target.value)}/>
+                    <br />
+                    Enter description:
+                    <input type="text" value={withdrawReason} onChange={(e) => setwithdrawReason(e.target.value)}/>
                     <div className="row-btns-br-len">
-                    <button className="lend-confirm">Withdraw</button>
+                    <button className="lend-confirm" onClick={handleWithdraw}>{withtxt}</button>
                     <button id="cancel-box" onClick={closeBorrowBox}>Cancel</button>
 
                     </div>

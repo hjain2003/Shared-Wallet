@@ -52,7 +52,7 @@ const Dashboard = () => {
       style={{ backgroundImage: `url(${background})` }}
     >
       <div className="grid">
-        <Navbar />
+        <Navbar name={name} />
         <div className="welcome-section">
           <div className="welcome">Welcome Back, {username}</div>
           <div className="search-notif">

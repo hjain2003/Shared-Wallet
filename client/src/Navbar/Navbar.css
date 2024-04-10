@@ -5,8 +5,13 @@
     padding-left: 3vh;
     /* background-color: rgba(79, 52, 120, 0.205); */
     height: 94%;
+    color: white;
 }
-
+#nav_name{
+    background-color: purple;
+    padding: 10px;
+    border-radius: 10px;
+}
 .nav-element{
     display: flex;
     padding: 1.25vh; 

@@ -107,6 +107,8 @@ export const SharedProvider = ({ children }) => {
   const addFundsToSharedWallet = async (walletId, amount) => {
     try {
       const SharedContract = createEthereumContract();
+      const check = ethers.utils.parseEther(amount.toString());
+      console.log("deposit context : ",check);
       await SharedContract.addFundsToSharedWallet(walletId, {
         value: ethers.utils.parseEther(amount.toString()),
       });
@@ -117,27 +119,31 @@ export const SharedProvider = ({ children }) => {
     }
   };
 
-  const withdrawFromSharedWallet = async (walletId, amount, reason) => {
+  const getContractBalance = async () => {
     try {
       const SharedContract = createEthereumContract();
+      const balance = await SharedContract.provider.getBalance(SharedContract.address);
+      console.log("Contract Balance:", ethers.utils.formatEther(balance));
+      return balance;
+    } catch (error) {
+      console.error("Error fetching contract balance:", error);
+      return ethers.BigNumber.from(0); // Return 0 if there's an error
+    }
+  };
 
-      const amountWei = ethers.utils.parseEther(amount.toString());
-
-      await SharedContract.withdrawFundsFromSharedWallet(
-        walletId,
-        amountWei,
-        reason
-      );
-
+  const withdrawFromSharedWallet = async (walletId, amount, description) => {
+    try {
+      const SharedContract = createEthereumContract();
+      const check = ethers.utils.parseEther(amount.toString());
+      console.log("context reached",check);
+      await SharedContract.withdrawFundsFromSharedWallet(walletId, {value : check}, description);
       getAccountBalance();
-
-      console.log(
-        `Funds withdrawn from Shared Wallet ${walletId}: ${amount} ETH`
-      );
+      console.log(`Successfully withdrew ${amount} ETH from Shared Wallet ${walletId}`);
     } catch (error) {
       console.error("Error withdrawing funds from Shared Wallet:", error);
     }
   };
+  
 
   const getNumberOfParticipants = async (walletId) => {
     try {
@@ -199,6 +205,7 @@ const mapNameAndUsernameToWalletId = async (name, username) => {
         getName,
         getUsername,
         mapNameAndUsernameToWalletId,
+        getContractBalance
       }}
     >
       {children}

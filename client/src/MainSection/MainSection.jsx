@@ -20,7 +20,7 @@ const pro1 = {
 };
 
 const MainSection = () => {
-  const { connectWallet, accountBalance, currentAccount, createSharedWallet, getAllSharedWallets } = useContext(SharedContext);
+  const { connectWallet, accountBalance, currentAccount, createSharedWallet, getAllSharedWallets,getContractBalance } = useContext(SharedContext);
 
   const shortenAddress = (address) => {
     if (address) {
@@ -62,6 +62,8 @@ const MainSection = () => {
 
   const fetchSharedWallets = async () => {
     const wallets = await getAllSharedWallets();
+    const cb = await getContractBalance();
+    console.log(cb);
     setSharedWallets(wallets);
   }
 

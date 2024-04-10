@@ -10,7 +10,7 @@ import depositsLogo from "./deposits.svg";
 import profileLogo from "./user.svg";
 import Charity from "../Charity/Charity";
 
-const Navbar = () => {
+const Navbar = ({name}) => {
   const [openCCard, setOpenCCard] = useState(false);
 
   const handleOpenCLogoClick = () => {
@@ -28,6 +28,13 @@ const Navbar = () => {
       <div className="emlogo">
         <img src={etherMate} alt="Logo" />
       </div>
+      
+      {/* <Link to="/dashboard" className="linkremove"> */}
+        {/* <div className="nav-element"> */}
+          {/* <img src={dashboardLogo} className="nav-logo" alt="Dashboard" /> */}
+          {/* <div className="nav-topic" id="nav_name">{name}</div> */}
+        {/* </div> */}
+      {/* </Link> */}
 
       <Link to="/dashboard" className="linkremove">
         <div className="nav-element">
@@ -58,7 +65,6 @@ const Navbar = () => {
           <div className="nav-topic">Split</div>
         </div>
       </Link>
-
       {openCCard && <Charity sopen={openCCard} onClose={CardCClose} />}
     </div>
   );
