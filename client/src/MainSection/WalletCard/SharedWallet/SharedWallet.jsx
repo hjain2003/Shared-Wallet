@@ -28,29 +28,30 @@ const pro1 = {
 const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowLimit, walletBalance}) => {
 
   const [openSCard, setOpenSCard] = useState(false);
-  const { getNumberOfParticipants } = useContext(SharedContext);
+  const { getNumberOfParticipants, getParticipantsWithAddresses} = useContext(SharedContext);
   const [numberOfParticipants, setNumberOfParticipants] = useState(0);
   const [isopenparticipants, setopenparticipants] = useState(false);
+  const [participantsData, setParticipantsData] = useState([]);
 
-  const participantsData = [
-    { username: "User1", address: "0x1234...5678" },
-    { username: "User2", address: "0xABCD...EFGH" },
-    { username: "User1", address: "0x1234...5678" },
-    { username: "User2", address: "0xABCD...EFGH" },
-    { username: "User1", address: "0x1234...5678" },
-    { username: "User2", address: "0xABCD...EFGH" },
-    { username: "User1", address: "0x1234...5678" },
-    { username: "User2", address: "0xABCD...EFGH" },
-    { username: "User1", address: "0x1234...5678" },
-    { username: "User2", address: "0xABCD...EFGH" },
-    { username: "User1", address: "0x1234...5678" },
-    { username: "User2", address: "0xABCD...EFGH" },
-    { username: "User1", address: "0x1234...5678" },
-    { username: "User2", address: "0xABCD...EFGH" },
-    { username: "User1", address: "0x1234...5678" },
-    { username: "User2", address: "0xABCD...EFGH" },
-    // Add more participant objects as needed
-  ];
+  // const participantsData = [
+  //   { username: "User1", address: "0x1234...5678" },
+  //   { username: "User2", address: "0xABCD...EFGH" },
+  //   { username: "User1", address: "0x1234...5678" },
+  //   { username: "User2", address: "0xABCD...EFGH" },
+  //   { username: "User1", address: "0x1234...5678" },
+  //   { username: "User2", address: "0xABCD...EFGH" },
+  //   { username: "User1", address: "0x1234...5678" },
+  //   { username: "User2", address: "0xABCD...EFGH" },
+  //   { username: "User1", address: "0x1234...5678" },
+  //   { username: "User2", address: "0xABCD...EFGH" },
+  //   { username: "User1", address: "0x1234...5678" },
+  //   { username: "User2", address: "0xABCD...EFGH" },
+  //   { username: "User1", address: "0x1234...5678" },
+  //   { username: "User2", address: "0xABCD...EFGH" },
+  //   { username: "User1", address: "0x1234...5678" },
+  //   { username: "User2", address: "0xABCD...EFGH" },
+  //   // Add more participant objects as needed
+  // ];
 
 
   useEffect(() => {
@@ -89,9 +90,14 @@ const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowL
     setOpenSCard(false);
   }
 
-  const openParticipants = ()=>{
+  const openParticipants = async()=>{
     setopenparticipants(true);
-    console.log("participant clicked");
+    try {
+      const participants = await getParticipantsWithAddresses(walletId);
+      setParticipantsData(participants);
+    } catch (error) {
+      console.error("Error fetching participants:", error);
+    }
   }
 
   const closeParticipants = ()=>{
@@ -112,7 +118,7 @@ const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowL
     {participantsData.map((participant, index) => (
             <div key={index} className="participant-row">
               <span className="username">{participant.username}</span>
-              <span className="address">{participant.address}</span>
+              <span className="address">{`${participant.address.substring(0, 8)}...${participant.address.substring(participant.address.length - 4)}`}</span>
             </div>
           ))}
     </div>

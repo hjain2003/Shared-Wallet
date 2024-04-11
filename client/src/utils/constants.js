@@ -1,5 +1,5 @@
 import abi from './Shared.json';
 
 export const contractABI = abi.abi;
-export const contractAddress = '0x154520d0B063A05531E2E7De3513ED960C45ADC8';
+export const contractAddress = '0x7a6116e305D643709cA05bF7886FB67cb52Fd25e';
 

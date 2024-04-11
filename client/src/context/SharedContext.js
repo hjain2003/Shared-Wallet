@@ -185,6 +185,23 @@ const mapNameAndUsernameToWalletId = async (name, username) => {
   }
 };
 
+const getParticipantsWithAddresses = async (walletId) => {
+  try {
+    const SharedContract = createEthereumContract();
+    const [walletAddresses, usernames] = await SharedContract.getParticipantsWithAddresses(walletId);
+
+    const participantsData = walletAddresses.map((address, index) => ({
+      username: usernames[index],
+      address: address,
+    }));
+
+    return participantsData;
+  } catch (error) {
+    console.error("Error fetching participants with addresses:", error);
+    return [];
+  }
+};
+
 
   useEffect(() => {
     checkIfWalletIsConnected();
@@ -205,7 +222,8 @@ const mapNameAndUsernameToWalletId = async (name, username) => {
         getName,
         getUsername,
         mapNameAndUsernameToWalletId,
-        getContractBalance
+        getContractBalance,
+        getParticipantsWithAddresses
       }}
     >
       {children}
