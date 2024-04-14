@@ -193,7 +193,7 @@ const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowL
             </div>
           </div>
           <div className="swbtn-btm">
-            <div className="leave-wallet">Leave Wallet</div>
+            <button className="leave-wallet" >Request To Join</button>
           </div>
         </div>
         <div >

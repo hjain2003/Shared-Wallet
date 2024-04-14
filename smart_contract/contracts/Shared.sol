@@ -34,7 +34,7 @@ contract Shared {
     mapping(uint256 => bool) public walletIdExists;
     mapping(address => string) public username;
     mapping(address => string) public name;
-    mapping(uint => uint) public charityId;
+    mapping(uint256 => uint256) public charityId;
     mapping(address => bool) public hasCreatedCharity;
 
     string[] public existingUsernames;
@@ -128,7 +128,7 @@ contract Shared {
         uint256 _walletId,
         address _participant
     ) internal view returns (bool) {
-        uint walletIndex = findWalletIndex(_walletId);
+        uint256 walletIndex = findWalletIndex(_walletId);
         for (
             uint256 i = 0;
             i < sharedWallets[walletIndex].participantRequests.length;
@@ -148,7 +148,7 @@ contract Shared {
         uint256 _walletId,
         address _participant
     ) public view returns (bool) {
-        uint walletIndex = findWalletIndex(_walletId);
+        uint256 walletIndex = findWalletIndex(_walletId);
         for (
             uint256 i = 0;
             i < sharedWallets[walletIndex].participants.length;
@@ -164,7 +164,7 @@ contract Shared {
     function checkUsernameExists(
         string memory _username
     ) internal view returns (bool) {
-        for (uint i = 0; i < existingUsernames.length; i++) {
+        for (uint256 i = 0; i < existingUsernames.length; i++) {
             if (
                 keccak256(bytes(existingUsernames[i])) ==
                 keccak256(bytes(_username))
@@ -393,8 +393,34 @@ contract Shared {
         );
     }
 
+    function getParticipantRequests(
+        uint256 _walletId
+    ) public view returns (address[] memory, string[] memory) {
+        require(
+            walletIdExists[_walletId],
+            "Wallet with given ID does not exist"
+        );
+
+        uint256 walletIndex = findWalletIndex(_walletId);
+        uint256 requestsCount = sharedWallets[walletIndex]
+            .participantRequests
+            .length;
+
+        address[] memory walletAddresses = new address[](requestsCount);
+        string[] memory usernames = new string[](requestsCount);
+
+        for (uint256 i = 0; i < requestsCount; i++) {
+            address participant = sharedWallets[walletIndex]
+                .participantRequests[i];
+            walletAddresses[i] = participant;
+            usernames[i] = username[participant];
+        }
+
+        return (walletAddresses, usernames);
+    }
+
     function getBalance(uint256 _walletId) public view returns (uint256) {
-        uint walletIndex = findWalletIndex(_walletId);
+        uint256 walletIndex = findWalletIndex(_walletId);
         require(
             isParticipant(_walletId, msg.sender),
             "You are not a particpant of the specified wallet id"
@@ -408,7 +434,7 @@ contract Shared {
         uint256 _amount,
         string memory _description
     ) public {
-        uint walletIndex = findWalletIndex(_walletId);
+        uint256 walletIndex = findWalletIndex(_walletId);
         require(
             walletIdExists[_walletId],
             "Wallet with given ID does not exist"
@@ -426,7 +452,7 @@ contract Shared {
             "Insufficient funds in the shared wallet"
         );
 
-        uint amountInEther = _amount * 1 ether;
+        uint256 amountInEther = _amount * 1 ether;
         sharedWallets[walletIndex].walletBalance -= amountInEther;
         sharedWallets[walletIndex].goalAmount += amountInEther;
         payable(msg.sender).transfer(amountInEther);
