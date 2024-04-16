@@ -26,33 +26,15 @@ const pro1 = {
 };
 
 const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowLimit, walletBalance }) => {
+  const { requestToJoinWallet, getParticipantRequests } = useContext(SharedContext);
+
   const [openSCard, setOpenSCard] = useState(false);
   const { getNumberOfParticipants, getParticipantsWithAddresses } = useContext(SharedContext);
   const [numberOfParticipants, setNumberOfParticipants] = useState(0);
   const [isopenparticipants, setopenparticipants] = useState(false);
   const [participantsData, setParticipantsData] = useState([]);
-  const [seeRequests, setRequests] = useState([]);
+  const [requestsData, setRequestsData] = useState([]);
   const [isRequestBoxOpen, setRequestBox] = useState(false);
-
-  const requestsData = [
-    { username: "User1", address: "0x1234...5678" },
-    { username: "User2", address: "0xABCD...EFGH" },
-    { username: "User1", address: "0x1234...5678" },
-    { username: "User2", address: "0xABCD...EFGH" },
-    { username: "User1", address: "0x1234...5678" },
-    { username: "User2", address: "0xABCD...EFGH" },
-    { username: "User1", address: "0x1234...5678" },
-    { username: "User2", address: "0xABCD...EFGH" },
-    { username: "User1", address: "0x1234...5678" },
-    { username: "User2", address: "0xABCD...EFGH" },
-    { username: "User1", address: "0x1234...5678" },
-    { username: "User2", address: "0xABCD...EFGH" },
-    { username: "User1", address: "0x1234...5678" },
-    { username: "User2", address: "0xABCD...EFGH" },
-    { username: "User1", address: "0x1234...5678" },
-    { username: "User2", address: "0xABCD...EFGH" },
-    // Add more participant objects as needed
-  ];
 
   useEffect(() => {
     const fetchNumberOfParticipants = async () => {
@@ -102,12 +84,27 @@ const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowL
     console.log("closed");
   };
 
-  const setRequestBoxOpen = () => {
+  const setRequestBoxOpen = async () => {
     setRequestBox(true);
+    try {
+      // Retrieve participant requests when the request box is opened
+      const requests = await getParticipantRequests(walletId);
+      setRequestsData(requests); // Update the state with the retrieved requests
+    } catch (error) {
+      console.error("Error fetching participant requests:", error);
+    }
   };
 
   const setRequestBoxClose = () => {
     setRequestBox(false);
+  };
+
+  const handleRequestToJoin = async () => {
+    try {
+      await requestToJoinWallet(walletId);
+    } catch (error) {
+      console.error("Error requesting to join wallet:", error);
+    }
   };
 
   var unit = "ETHEREUM";
@@ -144,18 +141,26 @@ const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowL
           <h3>Requests for {walletName}</h3>
           <input type="text" placeholder="Search Requests" />
           <br />
-          {requestsData.map((participant, index) => (
-            <div key={index} className="participant-row">
-              <span className="username">{participant.username}</span>
-              <span className="address">{`${participant.address.substring(0, 8)}...${participant.address.substring(
-                participant.address.length - 4
-              )}`}</span>
-              <button id="accept">Accept</button>
-              <button id="reject">Reject</button>
-            </div>
-          ))}
+          {requestsData && requestsData.length > 0 ? (
+            requestsData.map((requests, index) => (
+              <div key={index} className="participant-row">
+                <span className="username">{requests.username}</span>
+                <span className="address">
+                  {requests.address
+                    ? `${requests.address.substring(0, 8)}...${requests.address.substring(requests.address.length - 4)}`
+                    : "Address not available"}
+                </span>
+
+                <button id="accept">Accept</button>
+                <button id="reject">Reject</button>
+              </div>
+            ))
+          ) : (
+            <div>No requests found.</div>
+          )}
         </div>
       )}
+
       <AnimatePresence>
         <div>
           <motion.div class="pro1" id="pro1" variants={pro1} initial="hidden" animate="visible">
@@ -225,7 +230,9 @@ const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowL
                 </div>
               </div>
               <div className="swbtn-btm">
-                <button className="leave-wallet">Request To Join</button>
+                <button className="leave-wallet" onClick={handleRequestToJoin}>
+                  Request To Join
+                </button>
                 <button className="leave-wallet" onClick={setRequestBoxOpen}>
                   See Requests
                 </button>

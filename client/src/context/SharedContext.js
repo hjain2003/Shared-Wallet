@@ -9,11 +9,7 @@ const { ethereum } = window;
 const createEthereumContract = () => {
   const provider = new ethers.providers.Web3Provider(ethereum);
   const signer = provider.getSigner();
-  const SharedContract = new ethers.Contract(
-    contractAddress,
-    contractABI,
-    signer
-  );
+  const SharedContract = new ethers.Contract(contractAddress, contractABI, signer);
 
   console.log({
     provider,
@@ -58,9 +54,7 @@ export const SharedProvider = ({ children }) => {
       if (currentAccount) {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const balance = await provider.getBalance(currentAccount);
-        const formattedBalance = parseFloat(
-          ethers.utils.formatEther(balance)
-        ).toFixed(4);
+        const formattedBalance = parseFloat(ethers.utils.formatEther(balance)).toFixed(4);
         setAccountBalance(formattedBalance);
       }
     } catch (error) {
@@ -75,11 +69,7 @@ export const SharedProvider = ({ children }) => {
       const goalAmountWei = ethers.utils.parseEther(goalAmount.toString());
       const borrowLimitWei = ethers.utils.parseEther(borrowLimit.toString());
 
-      const transaction = await SharedContract.createSharedWallet(
-        goalAmountWei,
-        borrowLimitWei,
-        `${walletName}`
-      );
+      const transaction = await SharedContract.createSharedWallet(goalAmountWei, borrowLimitWei, `${walletName}`);
       const receipt = await transaction.wait();
 
       const walletId = receipt.events[0].args.walletId.toNumber();
@@ -108,7 +98,7 @@ export const SharedProvider = ({ children }) => {
     try {
       const SharedContract = createEthereumContract();
       const check = ethers.utils.parseEther(amount.toString());
-      console.log("deposit context : ",check);
+      console.log("deposit context : ", check);
       await SharedContract.addFundsToSharedWallet(walletId, {
         value: ethers.utils.parseEther(amount.toString()),
       });
@@ -135,73 +125,104 @@ export const SharedProvider = ({ children }) => {
     try {
       const SharedContract = createEthereumContract();
       const check = ethers.utils.parseEther(amount.toString());
-      console.log("context reached",check);
-      await SharedContract.withdrawFundsFromSharedWallet(walletId, {value : check}, description);
+      console.log("context reached", check);
+      await SharedContract.withdrawFundsFromSharedWallet(walletId, { value: check }, description);
       getAccountBalance();
       console.log(`Successfully withdrew ${amount} ETH from Shared Wallet ${walletId}`);
     } catch (error) {
       console.error("Error withdrawing funds from Shared Wallet:", error);
     }
   };
-  
 
   const getNumberOfParticipants = async (walletId) => {
     try {
-        const SharedContract = createEthereumContract();
-        const numberOfParticipants = await SharedContract.getNumberOfParticipants(walletId);
-        return numberOfParticipants;
+      const SharedContract = createEthereumContract();
+      const numberOfParticipants = await SharedContract.getNumberOfParticipants(walletId);
+      return numberOfParticipants;
     } catch (error) {
-        console.error('Error fetching number of participants:', error);
+      console.error("Error fetching number of participants:", error);
     }
-};
+  };
 
-const getName = async () => {
-  try {
-    const SharedContract = createEthereumContract();
-    const name = await SharedContract.getName();
-    return name;
-  } catch (error) {
-    console.error("Error fetching name:", error);
-  }
-};
+  const getName = async () => {
+    try {
+      const SharedContract = createEthereumContract();
+      const name = await SharedContract.getName();
+      return name;
+    } catch (error) {
+      console.error("Error fetching name:", error);
+    }
+  };
 
-const getUsername = async () => {
-  try {
-    const SharedContract = createEthereumContract();
-    const username = await SharedContract.getUsername();
-    return username;
-  } catch (error) {
-    console.error("Error fetching username:", error);
-  }
-};
+  const getUsername = async () => {
+    try {
+      const SharedContract = createEthereumContract();
+      const username = await SharedContract.getUsername();
+      return username;
+    } catch (error) {
+      console.error("Error fetching username:", error);
+    }
+  };
 
-const mapNameAndUsernameToWalletId = async (name, username) => {
-  try {
-    const SharedContract = createEthereumContract();
-    await SharedContract.mapNameAndUsernameToWalletId(name, username);
-    console.log("Name and username mapped successfully!");
-  } catch (error) {
-    console.error("Error mapping name and username:", error);
-  }
-};
+  const mapNameAndUsernameToWalletId = async (name, username) => {
+    try {
+      const SharedContract = createEthereumContract();
+      await SharedContract.mapNameAndUsernameToWalletId(name, username);
+      console.log("Name and username mapped successfully!");
+    } catch (error) {
+      console.error("Error mapping name and username:", error);
+    }
+  };
 
-const getParticipantsWithAddresses = async (walletId) => {
-  try {
-    const SharedContract = createEthereumContract();
-    const [walletAddresses, usernames] = await SharedContract.getParticipantsWithAddresses(walletId);
+  const getParticipantsWithAddresses = async (walletId) => {
+    try {
+      const SharedContract = createEthereumContract();
+      const [walletAddresses, usernames] = await SharedContract.getParticipantsWithAddresses(walletId);
 
-    const participantsData = walletAddresses.map((address, index) => ({
-      username: usernames[index],
-      address: address,
-    }));
+      const participantsData = walletAddresses.map((address, index) => ({
+        username: usernames[index],
+        address: address,
+      }));
 
-    return participantsData;
-  } catch (error) {
-    console.error("Error fetching participants with addresses:", error);
-    return [];
-  }
-};
+      return participantsData;
+    } catch (error) {
+      console.error("Error fetching participants with addresses:", error);
+      return [];
+    }
+  };
 
+  const requestToJoinWallet = async (walletId) => {
+    try {
+      const SharedContract = createEthereumContract();
+
+      // Call the requestToJoin function in the smart contract
+      const transaction = await SharedContract.requestToJoin(walletId);
+      const receipt = await transaction.wait();
+
+      console.log("Request to join wallet successful!");
+
+      // Optionally, you can trigger some state update or fetch updated data after the request is successful
+    } catch (error) {
+      console.error("Error requesting to join wallet:", error);
+    }
+  };
+
+  const getParticipantRequests = async (walletId) => {
+    try {
+      const SharedContract = createEthereumContract();
+
+      // Call the getParticipantRequests function in the smart contract
+      const requests = await SharedContract.getParticipantRequests(walletId);
+
+      console.log("Participant requests retrieved:", requests);
+
+      // Optionally, you can return the requests or trigger some state update here
+      return requests;
+    } catch (error) {
+      console.error("Error retrieving participant requests:", error);
+      return [];
+    }
+  };
 
   useEffect(() => {
     checkIfWalletIsConnected();
@@ -223,7 +244,9 @@ const getParticipantsWithAddresses = async (walletId) => {
         getUsername,
         mapNameAndUsernameToWalletId,
         getContractBalance,
-        getParticipantsWithAddresses
+        getParticipantsWithAddresses,
+        requestToJoinWallet,
+        getParticipantRequests,
       }}
     >
       {children}
