@@ -226,6 +226,23 @@ export const SharedProvider = ({ children }) => {
       return [];
     }
   };
+
+  const acceptParticipant = async (walletId, participantAddress) => {
+    try {
+      const SharedContract = createEthereumContract();
+  
+      const transaction = await SharedContract.acceptParticipant(walletId, participantAddress);
+      await transaction.wait();
+  
+      console.log(`Participant ${participantAddress} accepted for wallet ${walletId}`);
+      alert(`Participant added to group id ${walletId}`);
+      return true; 
+    } catch (error) {
+      console.error(`Error accepting participant ${participantAddress} for wallet ${walletId}:`, error);
+      return false;
+    }
+  };
+  
   
 
   useEffect(() => {
@@ -251,6 +268,7 @@ export const SharedProvider = ({ children }) => {
         getParticipantsWithAddresses,
         requestToJoinWallet,
         getParticipantRequests,
+        acceptParticipant
       }}
     >
       {children}

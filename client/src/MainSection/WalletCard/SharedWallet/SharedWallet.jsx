@@ -26,7 +26,7 @@ const pro1 = {
 };
 
 const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowLimit, walletBalance }) => {
-  const { requestToJoinWallet, getParticipantRequests } = useContext(SharedContext);
+  const { requestToJoinWallet, getParticipantRequests, acceptParticipant } = useContext(SharedContext);
 
   const [openSCard, setOpenSCard] = useState(false);
   const { getNumberOfParticipants, getParticipantsWithAddresses } = useContext(SharedContext);
@@ -88,7 +88,7 @@ const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowL
     setRequestBox(true);
     try {
       const requests = await getParticipantRequests(walletId);
-      setRequestsData(requests); 
+      setRequestsData(requests);
     } catch (error) {
       console.error("Error fetching participant requests:", error);
     }
@@ -150,7 +150,18 @@ const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowL
                     : "Address not available"}
                 </span>
 
-                <button id="accept">Accept</button>
+                <button
+                  id="accept"
+                  onClick={async () => {
+                    try {
+                      const success = await acceptParticipant(walletId, requests.address);
+                    } catch (error) {
+                      console.error(`Error accepting participant ${requests.address}:`, error);
+                    }
+                  }}
+                >
+                  Accept
+                </button>
                 <button id="reject">Reject</button>
               </div>
             ))
