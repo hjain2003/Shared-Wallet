@@ -210,19 +210,23 @@ export const SharedProvider = ({ children }) => {
   const getParticipantRequests = async (walletId) => {
     try {
       const SharedContract = createEthereumContract();
-
-      // Call the getParticipantRequests function in the smart contract
-      const requests = await SharedContract.getParticipantRequests(walletId);
-
-      console.log("Participant requests retrieved:", requests);
-
-      // Optionally, you can return the requests or trigger some state update here
-      return requests;
+  
+      // Fetch the participant requests (addresses and usernames) from the contract
+      const [walletAddresses, usernames] = await SharedContract.getParticipantRequests(walletId);
+  
+      // Combine addresses and usernames into an array of objects
+      const requestsData = walletAddresses.map((address, index) => ({
+        username: usernames[index],
+        address: address,
+      }));
+  
+      return requestsData;
     } catch (error) {
       console.error("Error retrieving participant requests:", error);
       return [];
     }
   };
+  
 
   useEffect(() => {
     checkIfWalletIsConnected();

@@ -87,9 +87,8 @@ const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowL
   const setRequestBoxOpen = async () => {
     setRequestBox(true);
     try {
-      // Retrieve participant requests when the request box is opened
       const requests = await getParticipantRequests(walletId);
-      setRequestsData(requests); // Update the state with the retrieved requests
+      setRequestsData(requests); 
     } catch (error) {
       console.error("Error fetching participant requests:", error);
     }
