@@ -254,6 +254,28 @@ export const SharedProvider = ({ children }) => {
       return false;
     }
   };
+
+  const getWalletTransactions = async (walletId) => {
+    try {
+      const SharedContract = createEthereumContract();
+      const transactions = await SharedContract.getWalletTransactions(walletId);
+  
+      // Format the transactions if needed (e.g., converting amounts from Wei to Ether)
+      const formattedTransactions = transactions.map((tx) => ({
+        sender: tx.sender,
+        receiver: tx.receiver,
+        amount: ethers.utils.formatEther(tx.amount),
+        description: tx.description,
+        timestamp: new Date(tx.timestamp * 1000).toLocaleString(), // Convert Unix timestamp to readable date
+      }));
+  
+      return formattedTransactions;
+    } catch (error) {
+      console.error("Error fetching wallet transactions:", error);
+      return [];
+    }
+  };
+  
   
 
 
@@ -281,7 +303,8 @@ export const SharedProvider = ({ children }) => {
         getParticipantsWithAddresses,
         requestToJoinWallet,
         getParticipantRequests,
-        acceptParticipant
+        acceptParticipant,
+        getWalletTransactions
       }}
     >
       {children}
