@@ -109,6 +109,30 @@ export const SharedProvider = ({ children }) => {
     }
   };
 
+  const withdrawFromSharedWallet = async (walletId, amount, description) => {
+    try {
+      const SharedContract = createEthereumContract();
+      const amountInEther = ethers.utils.parseEther(amount.toString());
+
+      const transaction = await SharedContract.withdrawFundsFromSharedWallet(walletId, amountInEther, description);
+      await transaction.wait();
+
+      console.log(`Successfully withdrew ${amount} ETH from wallet ${walletId}`);
+      alert(`Withdrawal of ${amount} ETH from wallet ID ${walletId} was successful!`);
+
+      getAccountBalance();
+      // const updatedWalletBalance = await SharedContract.getWalletBalance(walletId);
+      // setSharedWalletBalance(prevBalances => ({
+      //   ...prevBalances,
+      //   [walletId]: ethers.utils.formatEther(updatedWalletBalance),
+      // }));
+      
+    } catch (error) {
+      console.error("Error withdrawing funds from shared wallet:", error);
+      alert("Failed to withdraw funds from the shared wallet. Please check the console for details.");
+    }
+  };
+
   const getContractBalance = async () => {
     try {
       const SharedContract = createEthereumContract();
@@ -121,18 +145,6 @@ export const SharedProvider = ({ children }) => {
     }
   };
 
-  const withdrawFromSharedWallet = async (walletId, amount, description) => {
-    try {
-      const SharedContract = createEthereumContract();
-      const check = ethers.utils.parseEther(amount.toString());
-      console.log("context reached", check);
-      await SharedContract.withdrawFundsFromSharedWallet(walletId, { value: check }, description);
-      getAccountBalance();
-      console.log(`Successfully withdrew ${amount} ETH from Shared Wallet ${walletId}`);
-    } catch (error) {
-      console.error("Error withdrawing funds from Shared Wallet:", error);
-    }
-  };
 
   const getNumberOfParticipants = async (walletId) => {
     try {
@@ -243,7 +255,8 @@ export const SharedProvider = ({ children }) => {
     }
   };
   
-  
+
+
 
   useEffect(() => {
     checkIfWalletIsConnected();

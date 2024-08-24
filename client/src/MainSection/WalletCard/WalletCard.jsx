@@ -78,17 +78,15 @@ const WalletCard = ({ wallet }) => {
     }
   };
 
-  
   const handleWithdraw = async () => {
-    if (withdrawAmt && withdrawReason) {
+    const amountToWithdraw = parseFloat(withdrawAmt); // Convert to number
+    if (amountToWithdraw && withdrawReason) {
       setwithtxt('Withdrawing ...');
-      await withdrawFromSharedWallet(decimalWalletId, withdrawAmt, withdrawReason);
-      console.log(withdrawAmt);
-      setwithdrawAmt('');
-      setwithdrawReason('');
+      await withdrawFromSharedWallet(decimalWalletId, amountToWithdraw, withdrawReason);
       setwithtxt('Withdraw');
     }
   };
+
 
   const hexWalletId = wallet.walletId.toHexString();
   const decimalWalletId = parseInt(hexWalletId, 16).toString();

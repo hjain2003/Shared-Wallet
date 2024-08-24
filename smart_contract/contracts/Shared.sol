@@ -429,53 +429,109 @@ contract Shared {
         return sharedWallets[walletIndex].walletBalance / 1 ether;
     }
 
-    function withdrawFundsFromSharedWallet(
-        uint256 _walletId,
-        uint256 _amount,
-        string memory _description
-    ) public {
-        uint256 walletIndex = findWalletIndex(_walletId);
-        require(
-            walletIdExists[_walletId],
-            "Wallet with given ID does not exist"
-        );
-        require(
-            isParticipant(_walletId, msg.sender),
-            "Only participants can withdraw funds"
-        );
-        require(
-            _amount * 1 ether <= sharedWallets[walletIndex].borrowLimit,
-            "Withdrawal amount exceeds the borrow limit"
-        );
-        require(
-            _amount * 1 ether <= sharedWallets[walletIndex].walletBalance,
-            "Insufficient funds in the shared wallet"
-        );
+    // function withdrawFundsFromSharedWallet(
+    //     uint256 _walletId,
+    //     uint256 _amount,
+    //     string memory _description
+    // ) public {
+    //     uint256 walletIndex = findWalletIndex(_walletId);
+    //     require(
+    //         walletIdExists[_walletId],
+    //         "Wallet with given ID does not exist"
+    //     );
+    //     require(
+    //         isParticipant(_walletId, msg.sender),
+    //         "Only participants can withdraw funds"
+    //     );
+    //     require(
+    //         _amount * 1 ether <= sharedWallets[walletIndex].borrowLimit,
+    //         "Withdrawal amount exceeds the borrow limit"
+    //     );
+    //     require(
+    //         _amount * 1 ether <= sharedWallets[walletIndex].walletBalance,
+    //         "Insufficient funds in the shared wallet"
+    //     );
 
-        uint256 amountInEther = _amount * 1 ether;
-        sharedWallets[walletIndex].walletBalance -= amountInEther;
-        sharedWallets[walletIndex].goalAmount += amountInEther;
-        payable(msg.sender).transfer(amountInEther);
+    //     uint256 amountInEther = _amount * 1 ether;
+    //     sharedWallets[walletIndex].walletBalance -= amountInEther;
+    //     sharedWallets[walletIndex].goalAmount += amountInEther;
+    //     payable(msg.sender).transfer(amountInEther);
 
-        uint256 transactionIndex = allTransactions.length;
-        allTransactions.push(
-            Transaction({
-                sender: "shared wallet",
-                receiver: username[msg.sender],
-                amount: amountInEther,
-                description: _description,
-                timestamp: block.timestamp
-            })
-        );
+    //     uint256 transactionIndex = allTransactions.length;
+    //     allTransactions.push(
+    //         Transaction({
+    //             sender: "shared wallet",
+    //             receiver: username[msg.sender],
+    //             amount: amountInEther,
+    //             description: _description,
+    //             timestamp: block.timestamp
+    //         })
+    //     );
 
-        sharedWallets[walletIndex].transactionIndices.push(transactionIndex);
+    //     sharedWallets[walletIndex].transactionIndices.push(transactionIndex);
 
-        emit FundsWithdrawnFromSharedWallet(
-            _walletId,
-            username[msg.sender],
-            amountInEther
-        );
-    }
+    //     emit FundsWithdrawnFromSharedWallet(
+    //         _walletId,
+    //         username[msg.sender],
+    //         amountInEther
+    //     );
+    // }
+
+function withdrawFundsFromSharedWallet(
+    uint256 _walletId,
+    uint256 _amount,
+    string memory _description
+) public {
+    uint256 walletIndex = findWalletIndex(_walletId);
+
+    require(
+        walletIdExists[_walletId],
+        "Wallet with given ID does not exist"
+    );
+    require(
+        isParticipant(_walletId, msg.sender),
+        "Only participants can withdraw funds"
+    );
+
+    uint256 amountInWei = _amount * 1 ether;
+
+    require(
+        amountInWei <= sharedWallets[walletIndex].borrowLimit,
+        "Withdrawal amount exceeds the borrow limit"
+    );
+    require(
+        amountInWei <= sharedWallets[walletIndex].walletBalance,
+        "Insufficient funds in the shared wallet"
+    );
+
+    // Update the state first to prevent reentrancy
+    sharedWallets[walletIndex].walletBalance -= amountInWei;
+    sharedWallets[walletIndex].goalAmount += amountInWei;
+
+    // Transfer the Ether to the participant
+    payable(msg.sender).transfer(amountInWei);
+
+    // Log the transaction
+    uint256 transactionIndex = allTransactions.length;
+    allTransactions.push(
+        Transaction({
+            sender: "shared wallet",
+            receiver: username[msg.sender],
+            amount: amountInWei,
+            description: _description,
+            timestamp: block.timestamp
+        })
+    );
+
+    // Store the transaction index in the shared wallet's transaction history
+    sharedWallets[walletIndex].transactionIndices.push(transactionIndex);
+
+    emit FundsWithdrawnFromSharedWallet(
+        _walletId,
+        username[msg.sender],
+        amountInWei
+    );
+}
 
     function getWalletTransactions(
         uint256 _walletId
