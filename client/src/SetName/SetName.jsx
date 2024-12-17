@@ -18,7 +18,7 @@ const SetName = () => {
     if (name.trim() !== '' && username.trim() !== '') {
       await mapNameAndUsernameToWalletId(name, username);
       setLoadingtext('Lets Go!');
-      navigate('/dashboard');
+      navigate('/');
     } else {
       alert('Please fill in both name and username fields');
     }
