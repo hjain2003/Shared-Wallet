@@ -54,7 +54,7 @@ const Dashboard = () => {
       <div className="grid">
         <Navbar name={name} />
         <div className="welcome-section">
-          <div className="welcome">Welcome Back, {username}</div>
+          <div className="welcome">Welcome Back, <b>{username}</b></div>
           <div className="search-notif">
             <div className="search">
               <div className="search-section">

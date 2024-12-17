@@ -132,7 +132,7 @@ const MainSection = () => {
           </div>
 
           <div className="shared-wallets-section">
-            <div className="shared-head"> Your Shared Wallets</div>
+            <div className="shared-head"> Available Shared Wallets</div>
             <div className="shared-wallets">
               {sharedWallets.map(wallet => (
                 console.log(wallet.walletId),

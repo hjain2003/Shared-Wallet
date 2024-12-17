@@ -245,6 +245,79 @@ contract Shared {
         return sharedWallets;
     }
 
+    function getSharedWalletsForUser() public view returns (SharedWallet[] memory) {
+    uint256 count = 0;
+
+    // Count wallets the user is part of
+    for (uint256 i = 0; i < sharedWallets.length; i++) {
+        if (isParticipant(sharedWallets[i].walletId, msg.sender)) {
+            count++;
+        }
+    }
+
+    // Create a dynamic array for the result
+    SharedWallet[] memory result = new SharedWallet[](count);
+    uint256 index = 0;
+
+    for (uint256 i = 0; i < sharedWallets.length; i++) {
+        if (isParticipant(sharedWallets[i].walletId, msg.sender)) {
+            result[index] = sharedWallets[i];
+            index++;
+        }
+    }
+
+    return result;
+}
+
+    function getSharedWalletsNotForUser() public view returns (SharedWallet[] memory) {
+    uint256 count = 0;
+
+    // Count wallets the user is not part of
+    for (uint256 i = 0; i < sharedWallets.length; i++) {
+        if (!isParticipant(sharedWallets[i].walletId, msg.sender)) {
+            count++;
+        }
+    }
+
+    // Create a dynamic array for the result
+    SharedWallet[] memory result = new SharedWallet[](count);
+    uint256 index = 0;
+
+    for (uint256 i = 0; i < sharedWallets.length; i++) {
+        if (!isParticipant(sharedWallets[i].walletId, msg.sender)) {
+            result[index] = sharedWallets[i];
+            index++;
+        }
+    }
+
+    return result;
+}
+
+    function getRequestedSharedWallets() public view returns (SharedWallet[] memory) {
+    uint256 count = 0;
+
+    // Count wallets with pending requests from the user
+    for (uint256 i = 0; i < sharedWallets.length; i++) {
+        if (isRequestPending(sharedWallets[i].walletId, msg.sender)) {
+            count++;
+        }
+    }
+
+    // Create a dynamic array for the result
+    SharedWallet[] memory result = new SharedWallet[](count);
+    uint256 index = 0;
+
+    for (uint256 i = 0; i < sharedWallets.length; i++) {
+        if (isRequestPending(sharedWallets[i].walletId, msg.sender)) {
+            result[index] = sharedWallets[i];
+            index++;
+        }
+    }
+
+    return result;
+}
+
+
     function requestToJoin(uint256 _walletId) public {
         require(
             walletIdExists[_walletId],
@@ -428,54 +501,6 @@ contract Shared {
 
         return sharedWallets[walletIndex].walletBalance / 1 ether;
     }
-
-    // function withdrawFundsFromSharedWallet(
-    //     uint256 _walletId,
-    //     uint256 _amount,
-    //     string memory _description
-    // ) public {
-    //     uint256 walletIndex = findWalletIndex(_walletId);
-    //     require(
-    //         walletIdExists[_walletId],
-    //         "Wallet with given ID does not exist"
-    //     );
-    //     require(
-    //         isParticipant(_walletId, msg.sender),
-    //         "Only participants can withdraw funds"
-    //     );
-    //     require(
-    //         _amount * 1 ether <= sharedWallets[walletIndex].borrowLimit,
-    //         "Withdrawal amount exceeds the borrow limit"
-    //     );
-    //     require(
-    //         _amount * 1 ether <= sharedWallets[walletIndex].walletBalance,
-    //         "Insufficient funds in the shared wallet"
-    //     );
-
-    //     uint256 amountInEther = _amount * 1 ether;
-    //     sharedWallets[walletIndex].walletBalance -= amountInEther;
-    //     sharedWallets[walletIndex].goalAmount += amountInEther;
-    //     payable(msg.sender).transfer(amountInEther);
-
-    //     uint256 transactionIndex = allTransactions.length;
-    //     allTransactions.push(
-    //         Transaction({
-    //             sender: "shared wallet",
-    //             receiver: username[msg.sender],
-    //             amount: amountInEther,
-    //             description: _description,
-    //             timestamp: block.timestamp
-    //         })
-    //     );
-
-    //     sharedWallets[walletIndex].transactionIndices.push(transactionIndex);
-
-    //     emit FundsWithdrawnFromSharedWallet(
-    //         _walletId,
-    //         username[msg.sender],
-    //         amountInEther
-    //     );
-    // }
 
 function withdrawFundsFromSharedWallet(
     uint256 _walletId,
