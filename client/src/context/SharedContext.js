@@ -94,6 +94,42 @@ export const SharedProvider = ({ children }) => {
     }
   };
 
+  const getSharedWalletsForUser = async () => {
+    try {
+      const SharedContract = createEthereumContract();
+      const wallets = await SharedContract.getSharedWalletsForUser();
+      console.log("Shared wallets for user:", wallets);
+      return wallets;
+    } catch (error) {
+      console.error("Error fetching shared wallets for user:", error);
+      return [];
+    }
+  };
+
+  const getSharedWalletsNotForUser = async () => {
+    try {
+      const SharedContract = createEthereumContract();
+      const wallets = await SharedContract.getSharedWalletsNotForUser();
+      console.log("Shared wallets not for user:", wallets);
+      return wallets;
+    } catch (error) {
+      console.error("Error fetching shared wallets not for user:", error);
+      return [];
+    }
+  };
+
+  const getRequestedSharedWallets = async () => {
+    try {
+      const SharedContract = createEthereumContract();
+      const wallets = await SharedContract.getRequestedSharedWallets();
+      console.log("Requested shared wallets:", wallets);
+      return wallets;
+    } catch (error) {
+      console.error("Error fetching requested shared wallets:", error);
+      return [];
+    }
+  };
+
   const addFundsToSharedWallet = async (walletId, amount) => {
     try {
       const SharedContract = createEthereumContract();
@@ -339,6 +375,9 @@ export const SharedProvider = ({ children }) => {
         currentAccount,
         createSharedWallet,
         getAllSharedWallets,
+        getSharedWalletsForUser,
+        getSharedWalletsNotForUser,
+        getRequestedSharedWallets,
         addFundsToSharedWallet,
         withdrawFromSharedWallet,
         getNumberOfParticipants,

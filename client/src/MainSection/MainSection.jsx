@@ -20,7 +20,7 @@ const pro1 = {
 };
 
 const MainSection = () => {
-  const { connectWallet, accountBalance, currentAccount, createSharedWallet, getAllSharedWallets,getContractBalance } = useContext(SharedContext);
+  const { connectWallet, accountBalance, currentAccount, createSharedWallet, getAllSharedWallets, getSharedWalletsForUser, getSharedWalletsNotForUser, getRequestedSharedWallets, getContractBalance } = useContext(SharedContext);
 
   const shortenAddress = (address) => {
     if (address) {
@@ -36,6 +36,7 @@ const MainSection = () => {
   const [goalAmount, setGoalAmount] = useState('');
   const [borrowLimit, setBorrowLimit] = useState('');
   const [sharedWallets, setSharedWallets] = useState([]);
+  const [currentWalletType, setCurrentWalletType] = useState("all");
 
 
   const openSharedWalletPopUp = () => {
@@ -67,6 +68,36 @@ const MainSection = () => {
     setSharedWallets(wallets);
   }
 
+  const fetchMyWallets = async () => {
+    try {
+      const wallets = await getSharedWalletsForUser();
+      setSharedWallets(wallets);
+      setCurrentWalletType("my_wallets");
+    } catch (error) {
+      console.error("Error fetching my wallets:", error);
+    }
+  };
+
+  const fetchNotMyWallets = async () => {
+    try {
+      const wallets = await getSharedWalletsNotForUser();
+      setSharedWallets(wallets);
+      setCurrentWalletType("not_my_wallets");
+    } catch (error) {
+      console.error("Error fetching not my wallets:", error);
+    }
+  };
+
+  const fetchRequestedWallets = async () => {
+    try {
+      const wallets = await getRequestedSharedWallets();
+      setSharedWallets(wallets);
+      setCurrentWalletType("requested_wallets");
+    } catch (error) {
+      console.error("Error fetching requested wallets:", error);
+    }
+  };
+  
   useEffect(() => {
     fetchSharedWallets();
 
@@ -133,6 +164,11 @@ const MainSection = () => {
 
           <div className="shared-wallets-section">
             <div className="shared-head"> Available Shared Wallets</div>
+            <div className="main_sec_row_btns">
+            <button id="my_wallets" className={`mainsec_btns ${currentWalletType === "my_wallets" ? 'selected' : ''}`}  onClick={fetchMyWallets}>My Wallets</button>
+            <button id="not_my_wallets" className={`mainsec_btns ${currentWalletType === "not_my_wallets" ? 'selected' : ''}`}  onClick={fetchNotMyWallets}>Not My Wallets</button>
+            <button id="request_wallets" className={`mainsec_btns ${currentWalletType === "requested_wallets" ? 'selected' : ''}`}  onClick={fetchRequestedWallets}>Requested Wallets</button>
+            </div>    
             <div className="shared-wallets">
               {sharedWallets.map(wallet => (
                 console.log(wallet.walletId),

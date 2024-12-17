@@ -213,3 +213,7 @@
     font-size: 15px;
     border: none;
 }
+
+#accept,#reject{
+    cursor: pointer;
+}

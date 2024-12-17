@@ -96,7 +96,27 @@
     padding-left: 5vh;
     font-size: 25px;
 }
+.main_sec_row_btns{
+    padding-left: 5vh;
+    margin-top: 1vh;
+}
+.mainsec_btns{
+    /* margin-left: 5vh; */
+    cursor: pointer;
+    padding: 1vh;
+    background-color: purple;
+    color: white;
+    border-radius: 20px;
+    border: none;
+    margin-right: 2vh;
+}
+.mainsec_btns.selected {
+    background-color: #28a745; /* Green color */
+  }
 
+  .mainsec_btns:hover {
+    background-color: #5b2c6f; /* Hover effect */
+  }
 .shared-wallets{
     /* background-color: rgba(255, 255, 255, 0.256); */
     margin-top: 5vh;
