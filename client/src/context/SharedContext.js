@@ -112,24 +112,22 @@ export const SharedProvider = ({ children }) => {
   const withdrawFromSharedWallet = async (walletId, amount, description) => {
     try {
       const SharedContract = createEthereumContract();
-      const amountInEther = ethers.utils.parseEther(amount.toString());
 
-      const transaction = await SharedContract.withdrawFundsFromSharedWallet(walletId, amountInEther, description);
+      const amountInWei = ethers.utils.parseEther(amount.toString());
+      console.log("withdraw context: ",amountInWei);
+
+      // Call the withdrawFundsFromSharedWallet function in the contract
+      const transaction = await SharedContract.withdrawFundsFromSharedWallet(walletId, amount, description);
       await transaction.wait();
 
       console.log(`Successfully withdrew ${amount} ETH from wallet ${walletId}`);
-      alert(`Withdrawal of ${amount} ETH from wallet ID ${walletId} was successful!`);
+      alert(`Successfully withdrew ${amount} ETH from wallet ${walletId}`);
 
-      getAccountBalance();
-      // const updatedWalletBalance = await SharedContract.getWalletBalance(walletId);
-      // setSharedWalletBalance(prevBalances => ({
-      //   ...prevBalances,
-      //   [walletId]: ethers.utils.formatEther(updatedWalletBalance),
-      // }));
-      
+      // Optionally, refresh the account balance or wallet details
+      getAccountBalance(); 
     } catch (error) {
-      console.error("Error withdrawing funds from shared wallet:", error);
-      alert("Failed to withdraw funds from the shared wallet. Please check the console for details.");
+      console.error("Error withdrawing funds from Shared Wallet:", error);
+      alert("Failed to withdraw funds. Please check the console for details.");
     }
   };
 

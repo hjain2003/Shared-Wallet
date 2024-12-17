@@ -30,10 +30,9 @@ const WalletCard = ({ wallet }) => {
   const [depositAmount, setDepositAmount] = useState('');
   const [deptxt, setdeptxt] = useState('Deposit');
 
-  //withdraw
-  const [withdrawAmt, setwithdrawAmt] = useState('');
-  const [withdrawReason, setwithdrawReason] = useState('');
-  const [withtxt, setwithtxt] = useState('Withdraw');
+  const [withdrawAmount, setWithdrawAmount] = useState('');
+  const [withdrawDescription, setWithdrawDescription] = useState('');
+  const [withdrawBtnText, setWithdrawBtnText] = useState('Withdraw');
 
 
   const CardClose = () => {
@@ -79,11 +78,14 @@ const WalletCard = ({ wallet }) => {
   };
 
   const handleWithdraw = async () => {
-    const amountToWithdraw = parseFloat(withdrawAmt); // Convert to number
-    if (amountToWithdraw && withdrawReason) {
-      setwithtxt('Withdrawing ...');
-      await withdrawFromSharedWallet(decimalWalletId, amountToWithdraw, withdrawReason);
-      setwithtxt('Withdraw');
+    if (withdrawAmount) {
+      setWithdrawBtnText('Withdrawing ...');
+      console.log(withdrawAmount);
+      // Trigger the withdraw functionality from SharedContext
+      await withdrawFromSharedWallet(decimalWalletId, withdrawAmount, withdrawDescription);
+      setWithdrawAmount(''); // Clear the input field
+      setWithdrawDescription(''); // Clear the description input
+      setWithdrawBtnText('Withdraw');
     }
   };
 
@@ -145,12 +147,14 @@ const WalletCard = ({ wallet }) => {
                   >
                     <div className="shared_wallet_create borrow_info">
                     Enter the amount you want to withdraw:
-                    <input type="number" value={withdrawAmt} onChange={(e) => setwithdrawAmt(e.target.value)}/>
+                    <input type="number" value={withdrawAmount} 
+                      onChange={(e) => setWithdrawAmount(e.target.value)}  />
                     <br />
                     Enter description:
-                    <input type="text" value={withdrawReason} onChange={(e) => setwithdrawReason(e.target.value)}/>
+                    <input type="text" value={withdrawDescription} 
+                      onChange={(e) => setWithdrawDescription(e.target.value)} />
                     <div className="row-btns-br-len">
-                    <button className="lend-confirm" onClick={handleWithdraw}>{withtxt}</button>
+                    <button className="lend-confirm" onClick={handleWithdraw}>{withdrawBtnText}</button>
                     <button id="cancel-box" onClick={closeBorrowBox}>Cancel</button>
 
                     </div>
