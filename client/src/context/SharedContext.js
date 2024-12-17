@@ -277,7 +277,55 @@ export const SharedProvider = ({ children }) => {
   };
   
   
+  const createOrgCharity = async (name, description) => {
+    try {
+      const SharedContract = createEthereumContract();
+      const transaction = await SharedContract.createOrgCharity(name, description);
+      await transaction.wait();
+  
+      console.log(`Charity "${name}" created successfully!`);
+      alert(`Charity "${name}" created successfully!`);
+    } catch (error) {
+      console.error("Error creating charity:", error);
+      alert("Failed to create charity. Please check the console for details.");
+    }
+  };
+  
+  const getAllCharities = async () => {
+    try {
+      const SharedContract = createEthereumContract();
+      const charities = await SharedContract.getAllCharities();
+  
+      const formattedCharities = charities.map((charity) => ({
+        walletId: charity.walletId,
+        name: charity.charityName,
+        description: charity.description,
+      }));
+  
+      return formattedCharities;
+    } catch (error) {
+      console.error("Error fetching charities:", error);
+      return [];
+    }
+  };
 
+  const donateToCharity = async (walletId, amount) => {
+    try {
+      const SharedContract = createEthereumContract();
+      const amountInWei = ethers.utils.parseEther(amount.toString());
+  
+      const transaction = await SharedContract.donate(walletId, { value: amountInWei });
+      await transaction.wait();
+  
+      console.log(`Donated ${amount} ETH to ${walletId}`);
+      alert(`Successfully donated ${amount} ETH!`);
+    } catch (error) {
+      console.error("Error during donation:", error);
+      alert("Donation failed. Please check the console for details.");
+    }
+  };
+  
+  
 
 
   useEffect(() => {
@@ -304,7 +352,10 @@ export const SharedProvider = ({ children }) => {
         requestToJoinWallet,
         getParticipantRequests,
         acceptParticipant,
-        getWalletTransactions
+        getWalletTransactions,
+        createOrgCharity,
+        getAllCharities,
+        donateToCharity
       }}
     >
       {children}

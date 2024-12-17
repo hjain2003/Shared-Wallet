@@ -31,7 +31,45 @@
     padding-bottom: 2vh;
     padding-left: 2vh;
 }
+#create_charity{
+    cursor: pointer;
+    height: 6vh;
+    border-radius: 10px;
+    border: none;
+}
+.charitybox{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    height: 40vh;
+    width: 50vh;
+    z-index: 100000;
+    color: black;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    /* align-items: center; */
 
+}
+#create_charity_submit_btn, #closecharityboxbtn{
+    padding: 10px;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#create_charity_submit_btn{
+    background-color: green;
+}
+#closecharityboxbtn{
+    background-color: red;
+}
 .tabs{
     margin-bottom: 3vh;
 }

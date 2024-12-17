@@ -578,4 +578,13 @@ function withdrawFundsFromSharedWallet(
     function getAllCharities() public view returns (Charity[] memory) {
         return charities;
     }
+
+    function donate(address payable walletId) external payable {
+    require(walletId != address(0), "Invalid address.");
+    require(msg.sender != walletId, "Cannot donate to your own wallet.");
+
+    walletId.transfer(msg.value);
+
+}
+
 }
