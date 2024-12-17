@@ -4,6 +4,7 @@
     background-color: #0A040F;
     font-size: 20px;
     font-weight: 500;
+    overflow-y: hidden;
 }
 
 .grid{

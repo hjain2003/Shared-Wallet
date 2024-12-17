@@ -1,9 +1,9 @@
 .extradiv{
-    position: absolute;
-    top:50%;
-    left: 30%;
-    transform: translate(-50%,-50%);
-    z-index: 1000000000000;
+position: absolute;
+top:50%;
+left: 30%;
+transform: translate(-50%,-50%);
+z-index: 1000000000000;
   margin-top: -6vh;
   width: 100vh;
   background-color: gray;
@@ -12,14 +12,15 @@
 }
 .char-card{
     display: flex;
-    margin-left: 2vh;
+    padding-left: 2vh;
     text-align: center;
     padding-top: 2vh;
     padding-bottom: 2vh;
     border-style: solid;
     border-width: 1px 0;
     border-color: #ffffff;
-    align-items: center;   
+    align-items: center; 
+    width: 100%;
 }
 #close_extra_des{
     padding: 1vh;
@@ -59,8 +60,8 @@ linear-gradient(0deg, #9934E7, #9934E7);
     transform: translate(-50%, -50%);
     height: 150px;
     width: 230px;
-    color: black;
-    background-color: #fff;
+    color: rgb(255, 255, 255);
+    background-color: #311966;
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -70,12 +71,13 @@ linear-gradient(0deg, #9934E7, #9934E7);
   }
   
   .popup_donate input {
-    width: 100%;
+    width: 95%;
     padding: 8px;
-    /* margin-bottom: 16px; */
     border: 1px solid #ccc;
     border-radius: 4px;
   }
+
+  
   
   .popup_donate button {
     /* margin-right: 8px; */
@@ -83,7 +85,7 @@ linear-gradient(0deg, #9934E7, #9934E7);
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    background-color: black;
+    background-color: rgb(78, 65, 120);
     color: white;
   }
   

@@ -106,7 +106,7 @@ const SettingsSW = ({ sopen, onClose }) => {
               </div>
             </div>
 
-            <div>
+            <div className="charity-overflow-check">
               <div className="charity-header">
                 <div className="cha-wallid">Wallet ID</div>
                 <div className="cha-wallname">Charity Name</div>

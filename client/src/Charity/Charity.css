@@ -2,7 +2,7 @@
     position: fixed;
 	z-index: 20000;
     top: -14.5vh;
-    left: 31vh;
+    left: 32vh;
     width: 100%;
     color: white;
     font-size: 2vh;
@@ -19,6 +19,7 @@
     align-items: center;
     justify-items: center;
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .setting-exit-btns img{
@@ -30,6 +31,7 @@
     display: flex;
     padding-bottom: 2vh;
     padding-left: 2vh;
+    width: 90%;
 }
 #create_charity{
     cursor: pointer;
@@ -45,13 +47,13 @@
     height: 40vh;
     width: 50vh;
     z-index: 100000;
-    color: black;
-    background-color: #d6d4d4;
+    background-color: #311966;
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     display: flex;
     flex-direction: column;
+    color: white;
     /* justify-content: center; */
     /* align-items: center; */
 }
@@ -72,7 +74,7 @@
     background-color: green;
 }
 #closecharityboxbtn{
-    background-color: red;
+    background-color: rgb(163, 0, 0);
 }
 .tabs{
     margin-bottom: 3vh;
@@ -120,6 +122,7 @@
     display: flex;
     font-size: 3vh;
     padding-bottom: 2vh;
+    width: 95%;
 }
 
 .cha-wallid{
@@ -154,4 +157,8 @@
 }
 .search-input1:focus{
     outline: none;
+}
+
+.charity-overflow-check{
+    
 }
