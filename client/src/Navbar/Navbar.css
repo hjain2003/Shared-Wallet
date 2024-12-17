@@ -25,6 +25,11 @@
     cursor: pointer;
     
 }
+.nav-element.active {
+    background: linear-gradient(142.05deg, #1F8EBE -5.36%, #440495 29.46%, #440495 56.03%, #B102CD 81.92%);
+    cursor: pointer;
+  }
+  
 .nav-logo{
     padding-right: 1.5vh;
 }
