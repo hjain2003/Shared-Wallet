@@ -46,7 +46,7 @@
     width: 50vh;
     z-index: 100000;
     color: black;
-    background-color: #fff;
+    background-color: #d6d4d4;
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -54,7 +54,11 @@
     flex-direction: column;
     /* justify-content: center; */
     /* align-items: center; */
-
+}
+.charitybox input, textarea{
+    border: none;
+    border-radius: 1vh;
+    padding: 1vh;
 }
 #create_charity_submit_btn, #closecharityboxbtn{
     padding: 10px;

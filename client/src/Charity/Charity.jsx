@@ -24,7 +24,8 @@ const SettingsSW = ({ sopen, onClose }) => {
   const [isBoxOpen, setboxopen] = useState(false);
   const [charityName, setCharityName] = useState("");
   const [charityDescription, setCharityDescription] = useState("");
-  const [charities, setCharities] = useState([]);
+  const [charities, setCharities] = useState([]); 
+  const [charitycreatetxt, setcharitycreatetxt] = useState('Submit');
 
   useEffect(() => {
     const fetchCharities = async () => {
@@ -39,13 +40,14 @@ const SettingsSW = ({ sopen, onClose }) => {
       alert("Please provide both name and description.");
       return;
     }
-
+    setcharitycreatetxt('Loading ...');
     await createOrgCharity(charityName, charityDescription);
     const updatedCharities = await getAllCharities();
     setCharities(updatedCharities);
 
     setCharityName("");
     setCharityDescription("");
+    setcharitycreatetxt('Submit');
     setboxopen(false);
   };
 
@@ -78,7 +80,7 @@ const SettingsSW = ({ sopen, onClose }) => {
           ></textarea>
           <br />
           <span>
-            <button id="create_charity_submit_btn" onClick={handleCreateCharity}>Submit</button> &nbsp;&nbsp;
+            <button id="create_charity_submit_btn" onClick={handleCreateCharity}>{charitycreatetxt}</button> &nbsp;&nbsp;
             <button id="closecharityboxbtn" onClick={closecharitybox}>
               Close
             </button>
@@ -98,9 +100,9 @@ const SettingsSW = ({ sopen, onClose }) => {
                 <button id="create_charity" onClick={opencharitybox}>
                   Add your organization
                 </button>
-                <div className="logo5" onClick={onClose}>
+                {/* <div className="logo5" onClick={onClose}>
                   <img src={swexit} alt="Exit shared wallet" />
-                </div>
+                </div> */}
               </div>
             </div>
 

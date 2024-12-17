@@ -1,3 +1,15 @@
+.extradiv{
+    position: absolute;
+    top:50%;
+    left: 30%;
+    transform: translate(-50%,-50%);
+    z-index: 1000000000000;
+  margin-top: -6vh;
+  width: 100vh;
+  background-color: gray;
+  padding: 1vh;
+  border-radius: 2vh;
+}
 .char-card{
     display: flex;
     margin-left: 2vh;
@@ -9,6 +21,12 @@
     border-color: #ffffff;
     align-items: center;   
 }
+#close_extra_des{
+    padding: 1vh;
+    border-radius: 1vh;
+    cursor: pointer;
+    border: none;
+}
 .charity-id{
     width: 10vw;
     text-align: center;
@@ -16,6 +34,7 @@
 .charity-name{
     width: 35vw;
     text-align: center;
+    cursor: pointer;
 }
 .donate-charity{
     background: linear-gradient(272.88deg, #9934E7 4.95%, #5C1991 93.62%);

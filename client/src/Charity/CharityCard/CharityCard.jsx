@@ -4,6 +4,7 @@ import "./CharityCard.css";
 const CharityCard = ({ name, description, walletId, onDonate }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [donationAmount, setDonationAmount] = useState("");
+  const [extrades, setextrades] = useState(false);
 
   const truncateWalletId = (id) => {
     if (!id) return "";
@@ -23,6 +24,13 @@ const CharityCard = ({ name, description, walletId, onDonate }) => {
       alert("Enter a valid donation amount.");
     }
   };
+
+  const extra_desc=()=>{
+    setextrades(true);
+  }
+  const closeextradesbox=()=>{
+    setextrades(false);
+  }
 
   return (
     <>
@@ -44,11 +52,20 @@ const CharityCard = ({ name, description, walletId, onDonate }) => {
       )}
       <div className="char-card">
         <div className="charity-id">{truncateWalletId(walletId)}</div>
-        <div className="charity-name">{name}</div>
+        <div className="charity-name" onClick={extra_desc}>{name}</div>
+        <br/>
         <div className="donate-charity" onClick={handleDonate}>
           Donate
         </div>
       </div>
+      {extrades && 
+          <div className="extradiv">
+            {description}
+            <br/><br/>
+            <button id="close_extra_des" onClick={closeextradesbox}>Close</button>
+          </div>
+        }
+         
     </>
   );
 };

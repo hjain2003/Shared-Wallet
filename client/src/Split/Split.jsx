@@ -3,12 +3,18 @@ import './Split.css';
 import Navbar from '../Navbar/Navbar';
 import { SharedContext } from "../context/SharedContext";
 
+// Add a spinner component (you can customize this or use a library like react-spinners)
+const LoadingSpinner = () => {
+  return <div className="loading-spinner">Loading...</div>;
+};
+
 const Split = () => {
   const [walletAddress, setWalletAddress] = useState('');
   const [qrCode, setQRCode] = useState('');
   const [requestedAmount, setRequestedAmount] = useState('');
   const [numberOfPeople, setNumberOfPeople] = useState(1); // Default to 1 person
   const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false); // Loading state
 
   const { connectWallet, accountBalance, currentAccount, createSharedWallet } = useContext(SharedContext);
 
@@ -38,9 +44,11 @@ const Split = () => {
     }
 
     setErrorMessage('');
+    setLoading(true); // Set loading to true when generating QR code
 
     const amountPerPerson = Number(requestedAmount) / numberOfPeople;
     generateQRCode(walletAddress, amountPerPerson);
+    setLoading(false); // Set loading to false after QR is generated
   }, [requestedAmount, numberOfPeople, walletAddress, generateQRCode]);
 
   return (
@@ -66,7 +74,7 @@ const Split = () => {
               <br /><br />
               <button onClick={calculateAmountPerPerson} className="QR-req">Generate QR to Split</button>
               <br /><br />
-              {qrCode && <img src={qrCode} alt="Request Payment QR Code" />}
+              {loading ? <LoadingSpinner /> : qrCode && <img src={qrCode} alt="Request Payment QR Code" />}
             </div>
           )}
         </div>
