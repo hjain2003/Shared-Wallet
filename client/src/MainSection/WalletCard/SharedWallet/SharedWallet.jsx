@@ -112,7 +112,7 @@ const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowL
     setTransBoxOpen(true);
     try {
       const transactions = await getWalletTransactions(walletId);
-      setTransactions(transactions);
+      setTransactions(transactions.reverse());
     } catch (error) {
       console.error("Error fetching transactions:", error);
     }
@@ -187,29 +187,43 @@ const SharedWallet = ({ open, onClose, walletId, walletName, goalAmount, borrowL
         </div>
       )}
 
-      {/*TRANSACTION HISTORY*/}
-      {istransboxopen && (
-        <div id="transactions">
-          <button id="close_trans_box" onClick={closeTransBox}>Close</button>
-          <b>Transaction History for <u>{walletName}</u> </b>
-          <br />
-          <b>(WalletID: {walletId})</b>
-          <br />
-          {transactions && transactions.length > 0 ? (
-            transactions.map((transaction, index) => (
-              <div key={index} className="bar_row">
-                <span className="bar"><b>Sender:</b> {transaction.sender}</span> &nbsp;&nbsp;&nbsp;
-                <span className="bar"><b>Receiver:</b> {transaction.receiver}</span> &nbsp;&nbsp;&nbsp;
-                <span className="bar"><b>Amount:</b> {transaction.amount} {unit}</span> &nbsp;&nbsp;&nbsp;
-                <span className="bar"><b>Description:</b> {transaction.description}</span> &nbsp;&nbsp;&nbsp;
-                <span className="bar"><b>Timestamp:</b> {transaction.timestamp}</span> &nbsp;&nbsp;&nbsp;
-              </div>
-            ))
-          ) : (
-            <div>No transactions found.</div>
-          )}
-        </div>
+      {/* TRANSACTION HISTORY */}
+{istransboxopen && (
+  <div id="transactions">
+    <button id="close_trans_box" onClick={closeTransBox}>Close</button>
+    <b>Transaction History for <u>{walletName}</u></b>
+    <br />
+    <b>(WalletID: {walletId})</b>
+    
+
+    {/* Table for Transaction History */}
+    <div className="transaction-table">
+      <div className="table-header">
+        <div className="table-column"><b>Sender</b></div>
+        <div className="table-column"><b>Receiver</b></div>
+        <div className="table-column"><b>Amount</b></div>
+        <div className="table-column"><b>Description</b></div>
+        <div className="table-column"><b>Timestamp</b></div>
+      </div>
+
+      {/* Display transaction rows */}
+      {transactions && transactions.length > 0 ? (
+        transactions.reverse().map((transaction, index) => (
+          <div key={index} className="table-row">
+            <div className="table-column">{transaction.sender}</div>
+            <div className="table-column">{transaction.receiver}</div>
+            <div className="table-column">{transaction.amount} {unit}</div>
+            <div className="table-column">{transaction.description}</div>
+            <div className="table-column">{transaction.timestamp}</div>
+          </div>
+        ))
+      ) : (
+        <div>No transactions found.</div>
       )}
+    </div>
+  </div>
+)}
+
       <AnimatePresence>
         <div>
           <motion.div class="pro1" id="pro1" variants={pro1} initial="hidden" animate="visible">

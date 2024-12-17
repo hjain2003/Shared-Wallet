@@ -217,3 +217,64 @@
 #accept,#reject{
     cursor: pointer;
 }
+
+/* Container for the transaction history */
+#transactions {
+    margin-top: 20px;
+    background-color: rgb(57, 0, 59);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* Table structure */
+  .transaction-table {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+  }
+  
+  /* Table header */
+  .table-header {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    padding: 5px;
+    background-color: #333;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  /* Table rows */
+  .table-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    padding: 5px;
+    background-color: gray;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    align-items: center;
+  }
+  
+  /* Individual table column */
+  .table-column {
+    text-align: center;
+    padding: 5px;
+  }
+  
+  /* Close button styling */
+  #close_trans_box {
+    background-color: purple;
+    color: white;
+    cursor: pointer;
+    border: none;
+    padding: 8px;
+    border-radius: 7px;
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+  
