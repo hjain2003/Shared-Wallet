@@ -118,14 +118,13 @@
     background-color: #5b2c6f; /* Hover effect */
   }
 .shared-wallets{
-    /* background-color: rgba(255, 255, 255, 0.256); */
-    margin-top: 5vh;
     margin-left: 5vh;
     margin-right: 1vh ;
-    height: 59vh;
+    height: auto;
     margin-top: 2vh;
     display: flex;
     flex-wrap: wrap;
+    gap:1vh;
     overflow-y: scroll;
 }
 

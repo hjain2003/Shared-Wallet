@@ -94,7 +94,7 @@ const WalletCard = ({ wallet }) => {
   const decimalWalletId = parseInt(hexWalletId, 16).toString();
 
   return (
-    <div>
+    <div className="wallet-card-container">
 
       {overlayVisible && <div className="overlay"></div>}
       <div className='wallet-card'>
