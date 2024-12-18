@@ -36,6 +36,8 @@ contract Shared {
     mapping(address => string) public name;
     mapping(uint256 => uint256) public charityId;
     mapping(address => bool) public hasCreatedCharity;
+    mapping(address => uint256) public lastWithdrawalTime; // Mapping to track last withdrawal timestamp
+    uint256 public cooldownPeriod = 24 hours;
 
     string[] public existingUsernames;
 
@@ -517,6 +519,10 @@ function withdrawFundsFromSharedWallet(
         isParticipant(_walletId, msg.sender),
         "Only participants can withdraw funds"
     );
+    uint256 currentTime = block.timestamp;
+
+        // Ensure at least 24 hours have passed since the last withdrawal
+        require(currentTime >= lastWithdrawalTime[msg.sender] + cooldownPeriod, "You can only withdraw once every 24 hours.");
 
     uint256 amountInWei = _amount * 1 ether;
 
@@ -550,6 +556,8 @@ function withdrawFundsFromSharedWallet(
 
     // Store the transaction index in the shared wallet's transaction history
     sharedWallets[walletIndex].transactionIndices.push(transactionIndex);
+
+    lastWithdrawalTime[msg.sender] = currentTime;
 
     emit FundsWithdrawnFromSharedWallet(
         _walletId,
