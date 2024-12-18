@@ -31,13 +31,23 @@
     display: flex;
     padding-bottom: 2vh;
     padding-left: 2vh;
-    width: 90%;
+    width: 98%;
 }
 #create_charity{
     cursor: pointer;
     height: 6vh;
     border-radius: 10px;
     border: none;
+    background: linear-gradient(272.88deg, #9934E7 4.95%, #5C1991 93.62%);
+    box-shadow: 0px 4px 20px 0px rgba(104, 109, 224, 0.5);
+    color: white;
+    margin-left: 2vh;
+}
+
+#create_charity:hover{
+    background: linear-gradient(0deg, #0A040F, #0A040F),
+    linear-gradient(0deg, #9934E7, #9934E7);
+        box-shadow: 0px 4px 20px 0px rgba(153, 52, 231, 1);
 }
 .charitybox{
     position: absolute;
@@ -47,13 +57,13 @@
     height: 40vh;
     width: 50vh;
     z-index: 100000;
-    background-color: #311966;
+    background-color: #e0e0e0;
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     display: flex;
     flex-direction: column;
-    color: white;
+    color: rgb(0, 0, 0);
     /* justify-content: center; */
     /* align-items: center; */
 }
@@ -71,10 +81,22 @@
 }
 
 #create_charity_submit_btn{
-    background-color: green;
+    background: linear-gradient(272.88deg, #2a8743 4.95%, #002904 93.62%);
+    box-shadow: 0px 4px 20px 0px rgba(104, 109, 224, 0.5);
+}
+#create_charity_submit_btn:hover{
+    background: linear-gradient(0deg, #0A040F, #0A040F),
+linear-gradient(0deg, #56f056, #34e764);
+    box-shadow: 0px 4px 20px 0px rgb(52, 231, 100);
 }
 #closecharityboxbtn{
-    background-color: rgb(163, 0, 0);
+    background: linear-gradient(272.88deg, #973131 4.95%, #400505 93.62%);
+    box-shadow: 0px 4px 20px 0px rgba(104, 109, 224, 0.5);
+}
+#closecharityboxbtn:hover{
+    background: linear-gradient(0deg, #0A040F, #0A040F),
+linear-gradient(0deg, #f05656, #e73434);
+    box-shadow: 0px 4px 20px 0px rgb(231, 52, 52);
 }
 .tabs{
     margin-bottom: 3vh;

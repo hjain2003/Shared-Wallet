@@ -60,8 +60,8 @@ linear-gradient(0deg, #9934E7, #9934E7);
     transform: translate(-50%, -50%);
     height: 150px;
     width: 230px;
-    color: rgb(255, 255, 255);
-    background-color: #311966;
+    color: rgb(0, 0, 0);
+    background-color: #b8b8b8;
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -85,7 +85,16 @@ linear-gradient(0deg, #9934E7, #9934E7);
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    background-color: rgb(78, 65, 120);
+    background: linear-gradient(272.88deg, #9934E7 4.95%, #5C1991 93.62%);
+    box-shadow: 0px 4px 20px 0px rgba(104, 109, 224, 0.5);
     color: white;
   }
+
+  .popup_donate button:hover {
+    background: linear-gradient(0deg, #0A040F, #0A040F),
+    linear-gradient(0deg, #9934E7, #9934E7);
+        box-shadow: 0px 4px 20px 0px rgba(153, 52, 231, 1);
+  }
+
+  
   

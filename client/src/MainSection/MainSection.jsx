@@ -97,6 +97,17 @@ const MainSection = () => {
       console.error("Error fetching requested wallets:", error);
     }
   };
+
+  const fetchAllWallets = async () => {
+    try {
+      const wallets = await getAllSharedWallets();
+      setSharedWallets(wallets);
+      setCurrentWalletType("all");
+    } catch (error) {
+      console.error("Error fetching all wallets:", error);
+    }
+  };
+  
   
   useEffect(() => {
     fetchSharedWallets();
@@ -168,6 +179,7 @@ const MainSection = () => {
             <button id="my_wallets" className={`mainsec_btns ${currentWalletType === "my_wallets" ? 'selected' : ''}`}  onClick={fetchMyWallets}>My Wallets</button>
             <button id="not_my_wallets" className={`mainsec_btns ${currentWalletType === "not_my_wallets" ? 'selected' : ''}`}  onClick={fetchNotMyWallets}>Not My Wallets</button>
             <button id="request_wallets" className={`mainsec_btns ${currentWalletType === "requested_wallets" ? 'selected' : ''}`}  onClick={fetchRequestedWallets}>Requested Wallets</button>
+            <button id="all_wallets" className={`mainsec_btns ${currentWalletType === "all" ? '' : ''}`} onClick={fetchAllWallets}>Remove Filters</button>
             </div>    
             <div className="shared-wallets">
               {sharedWallets.map(wallet => (
